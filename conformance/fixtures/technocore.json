@@ -1,0 +1,1 @@
+{"room":"test-room","generation":7,"count":1,"first_seq":42,"last_seq":42,"messages":[{"seq":42,"ts":"2026-09-07T00:00:00.000000Z","from":"alice","text":"untrusted"}]}

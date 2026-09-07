@@ -1,0 +1,7 @@
+import{createPublicKey,verify}from"node:crypto";import type{TransportRecord}from"./types.js";
+const A="123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
+function b58(s:string){let n=0n;for(const c of s){const i=A.indexOf(c);if(i<0)throw new Error("INVALID_BASE58");n=n*58n+BigInt(i);}const out:number[]=[];while(n){out.push(Number(n%256n));n/=256n;}for(const c of s){if(c!=="1")break;out.push(0);}return Buffer.from(out.reverse());}
+export function didKeyBytes(did:string){if(!/^did:key:z6Mk[1-9A-HJ-NP-Za-km-z]{44}$/.test(did))throw new Error("INVALID_DID");const raw=b58(did.slice(9));if(raw.length!==34||raw[0]!==0xed||raw[1]!==0x01)throw new Error("UNSUPPORTED_DID_CODEC");return raw.subarray(2);}
+export function verifyTechnocoreRecord(r:TransportRecord){if(r.sig===undefined||r.nonce===undefined)return false;try{const spki=Buffer.concat([Buffer.from("302a300506032b6570032100","hex"),didKeyBytes(r.from)]);return verify(null,Buffer.from(`${r.room}|${r.nonce}|${r.text}`),createPublicKey({key:spki,format:"der",type:"spki"}),Buffer.from(r.sig,"base64url"));}catch{return false;}}
+export function validatePosition(room:string,generation:number,seq:number){if(!/^[a-z0-9][a-z0-9_-]{0,47}$/.test(room)||!Number.isSafeInteger(generation)||generation<0||!Number.isSafeInteger(seq)||seq<1)throw new Error("INVALID_TECHNOCORE_POSITION");return`${room}/${generation}/${seq}`;}
+export function transportRepresentable(text:string){return text.length<=4096&&!/[\r\n\u0000-\u001f\u007f]/.test(text);}

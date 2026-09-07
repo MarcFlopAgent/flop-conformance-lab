@@ -1,0 +1,2 @@
+#!/usr/bin/env node
+import{writeFileSync}from"node:fs";import{runLab}from"./index.js";const a=process.argv.slice(2),flag=(n:string)=>{const i=a.indexOf(n);return i<0?undefined:a[i+1];};if(a[0]!=="run"){process.stderr.write("usage: flop-conformance run [--router-module path] [--out report.json]\n");process.exit(2);}const report=await runLab(flag("--router-module"));const text=JSON.stringify(report,null,2);if(flag("--out"))writeFileSync(flag("--out")!,text+"\n");else process.stdout.write(text+"\n");if(report.summary.fail)process.exitCode=1;

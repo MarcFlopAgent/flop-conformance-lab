@@ -1,0 +1,10 @@
+node_modules/
+dist/
+coverage/
+release/
+.env*
+*.log
+*.pem
+*.key
+reports/*.json
+!reports/.gitkeep
