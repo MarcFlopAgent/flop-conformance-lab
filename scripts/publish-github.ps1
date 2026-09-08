@@ -1,8 +1,8 @@
 param([Parameter(Mandatory=$true)][ValidatePattern('^[A-Za-z0-9_.-]+$')][string]$Owner)
 $ErrorActionPreference='Stop'
 $RepoName='flop-conformance-lab'
-$Tag='v0.1.0-alpha'
-$ExpectedHash='7f1dd7f7ab13f1cf549c51ce003079cdb36c31ec5c875e6ff1ced5ba64196997'
+$Tag='v0.1.1-alpha'
+$ExpectedHash='8eb96d8a5cc7850f129f721dbc927e933343a2908726e6aabb417ce8bb16cc47'
 $Description='Cross-system interoperability and protocol-drift testing for FLOP, TCLK, Technocore and FLOP routing implementations.'
 $Expected="https://github.com/$Owner/$RepoName.git"
 if(-not(Get-Command gh -ErrorAction SilentlyContinue)){throw 'DESKTOP_INTERACTIVE_AUTH_REQUIRED: GitHub CLI is not installed.'}
@@ -14,7 +14,7 @@ npm ci --ignore-scripts
 npm run check
 New-Item -ItemType Directory -Force -Path release|Out-Null
 npm pack --pack-destination release|Out-Null
-$Tarball=(Get-ChildItem -LiteralPath release -Filter 'flop-tools-conformance-lab-0.1.0.tgz' -File).FullName
+$Tarball=(Get-ChildItem -LiteralPath release -Filter 'flop-tools-conformance-lab-0.1.1.tgz' -File).FullName
 $Hash=(Get-FileHash -LiteralPath $Tarball -Algorithm SHA256).Hash.ToLowerInvariant()
 if($Hash-ne$ExpectedHash){throw "Generated tarball hash $Hash does not match audited release hash $ExpectedHash."}
 Set-Content -LiteralPath release\SHA256SUMS -Encoding ascii -Value "$Hash  $([IO.Path]::GetFileName($Tarball))"
@@ -29,10 +29,10 @@ gh repo edit "$Owner/$RepoName" --description $Description --add-topic flop --ad
 git push -u origin main
 $ExistingTag=(git rev-parse -q --verify "refs/tags/$Tag^{}" 2>$null)
 if($ExistingTag-and($ExistingTag-ne(git rev-parse HEAD))){throw "$Tag exists at a different commit."}
-if(-not$ExistingTag){git tag -a $Tag -m 'FLOP Conformance Lab v0.1.0-alpha'}
+if(-not$ExistingTag){git tag -a $Tag -m 'FLOP Conformance Lab v0.1.1-alpha'}
 git push origin $Tag
 gh release view $Tag --repo "$Owner/$RepoName" 1>$null 2>$null
-if($LASTEXITCODE-ne 0){gh release create $Tag $Tarball release\SHA256SUMS release\example-report.json conformance\sources\manifest.json --repo "$Owner/$RepoName" --title 'FLOP Conformance Lab v0.1.0-alpha' --notes-file RELEASE_NOTES.md --prerelease}else{gh release upload $Tag $Tarball release\SHA256SUMS release\example-report.json conformance\sources\manifest.json --repo "$Owner/$RepoName" --clobber}
+if($LASTEXITCODE-ne 0){gh release create $Tag $Tarball release\SHA256SUMS release\example-report.json conformance\sources\manifest.json --repo "$Owner/$RepoName" --title 'FLOP Conformance Lab v0.1.1-alpha' --notes-file RELEASE_NOTES.md --prerelease}else{gh release upload $Tag $Tarball release\SHA256SUMS release\example-report.json conformance\sources\manifest.json --repo "$Owner/$RepoName" --clobber}
 $Result=gh repo view "$Owner/$RepoName" --json url,visibility|ConvertFrom-Json
 if($Result.visibility-ne'PUBLIC'){throw 'Repository visibility verification failed.'}
 $Result|ConvertTo-Json

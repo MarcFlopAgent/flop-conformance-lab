@@ -42,7 +42,7 @@ The FLOP Yellow Paper `0.5.0-draft` is an implementation target. Its Appendix H 
 
 ## Maturity
 
-Release `v0.1.0-alpha` is an early public interoperability baseline. Coverage is intentionally focused, not exhaustive. The live FLOP runtime lane remains `RUNTIME_UNAVAILABLE`; TCLK `v0.1.0` itself is alpha and its shipped rehearsal rail does not move value.
+Release `v0.1.1-alpha` is an early public interoperability baseline. Coverage is intentionally focused, not exhaustive. The live FLOP runtime lane remains `RUNTIME_UNAVAILABLE`; TCLK `v0.1.0` itself is alpha and its shipped rehearsal rail does not move value.
 
 ## Security
 

@@ -9,8 +9,10 @@ const run=(command,args,cwd=temp)=>{const windowsNpm=process.platform==="win32"&
 try{
  const packed=JSON.parse(run("npm",["pack",root,"--json","--pack-destination",temp],root));
  const tgz=join(temp,packed[0].filename);
+ const dependencyPacked=JSON.parse(run("npm",["pack",join(root,"node_modules","@flop-labs","tclk"),"--json","--pack-destination",temp],root));
+ const dependencyTgz=join(temp,dependencyPacked[0].filename);
  writeFileSync(join(temp,"package.json"),'{"private":true,"type":"module"}\n');
- run("npm",["install",tgz,"--ignore-scripts","--no-audit","--no-fund","--offline"]);
+ run("npm",["install",tgz,dependencyTgz,"--ignore-scripts","--no-audit","--no-fund","--offline"]);
  const cli=join(temp,"node_modules","@flop-tools","conformance-lab","dist","src","cli.js");
  run(process.execPath,[cli,"--help"]);
  const report=JSON.parse(run(process.execPath,[cli,"run"]));
