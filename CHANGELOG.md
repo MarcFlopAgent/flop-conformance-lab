@@ -1,5 +1,5 @@
 # Changelog
 
-## 0.1.0 - 2026-09-07
+## 0.1.0-alpha - 2026-09-08
 
-- Initial cross-system TCLK, Technocore, signing, Router and FLOP target-spec conformance lanes.
+- Initial cross-system TCLK, Technocore, signing, Router and FLOP target-spec lanes, including normative-field ID regression coverage.

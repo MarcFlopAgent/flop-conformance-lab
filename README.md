@@ -2,7 +2,9 @@
 
 Interoperability, protocol-drift and boundary conformance testing across FLOP, TCLK, Technocore and FLOP routing implementations.
 
-This independent project is not an official FLOP Labs validator. Its primary value is testing boundaries between systems rather than merely rerunning an upstream unit suite.
+> **Alpha community project. Not an official FLOP Labs product.**
+
+This independent project is not an official FLOP Labs validator and carries no endorsement. TCLK tests TCLK itself; this Lab focuses on boundaries between TCLK, Technocore signed transport, signing/canonicalization, routing implementations, and FLOP target semantics. It performs no settlement and requires no production DID, wallet, FLOP token, passphrase, or API key.
 
 ## Current lanes
 
@@ -14,6 +16,10 @@ This independent project is not an official FLOP Labs validator. Its primary val
 - `router`: optional adapter conformance against a built Session Router module.
 - `flop`: target-spec reporting only while the live runtime adapter is unavailable.
 
+`RELEASE_CONFORMANCE` is active against pinned `@flop-labs/tclk@0.1.0` vectors. `UPSTREAM_COMPARISON` is currently **partial / manifest-only**: the exact upstream SHA is recorded, but a second behavioral lane is not yet executed. Open pull requests and issues are provisional, never silently normative.
+
+`UPSTREAM_COMPATIBILITY_WORKAROUND`: the released TCLK ID helpers hash every enumerable property supplied by the caller. The Lab exports `normativeOfferId` and `normativeContractId`, which whitelist only normative protocol fields so transport/runtime metadata cannot change an offer or contract ID. Official vectors remain unmodified; this workaround is covered by regression tests and should be removed only after a verified compatible upstream release.
+
 `seq` and `ts` are assigned by Technocore and are not covered by the sender signature. Transcript replay uses each retained event's historical timestamp; it does not reinterpret a previously valid event with today's wall clock.
 
 ## Run
@@ -21,6 +27,7 @@ This independent project is not an official FLOP Labs validator. Its primary val
 ```powershell
 npm ci
 npm run check
+npm run build
 node dist/src/cli.js run
 node dist/src/cli.js run --router-module ..\flop-session-router\dist\src\index.js --out reports\local.json
 ```
@@ -32,6 +39,10 @@ Every command works with stdin closed. No passphrase, wallet, browser login or n
 Every result is marked `RELEASE_NORMATIVE`, `MAIN_NORMATIVE`, `PROVISIONAL_PR`, `OPEN_ISSUE`, `TARGET_SPEC`, or `LOCAL_TEST`. The release lane is pinned to package integrity and commit SHA. Floating `main` is never a deterministic CI dependency.
 
 The FLOP Yellow Paper `0.5.0-draft` is an implementation target. Its Appendix H determines whether a mechanism is live, partial or planned. A target-spec pass is not a claim that a live compute channel exists.
+
+## Maturity
+
+Release `v0.1.0-alpha` is an early public interoperability baseline. Coverage is intentionally focused, not exhaustive. The live FLOP runtime lane remains `RUNTIME_UNAVAILABLE`; TCLK `v0.1.0` itself is alpha and its shipped rehearsal rail does not move value.
 
 ## Security
 
