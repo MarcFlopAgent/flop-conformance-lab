@@ -2,6 +2,7 @@ param([Parameter(Mandatory=$true)][ValidatePattern('^[A-Za-z0-9_.-]+$')][string]
 $ErrorActionPreference='Stop'
 $RepoName='flop-conformance-lab'
 $Tag='v0.1.0-alpha'
+$ExpectedHash='7f1dd7f7ab13f1cf549c51ce003079cdb36c31ec5c875e6ff1ced5ba64196997'
 $Description='Cross-system interoperability and protocol-drift testing for FLOP, TCLK, Technocore and FLOP routing implementations.'
 $Expected="https://github.com/$Owner/$RepoName.git"
 if(-not(Get-Command gh -ErrorAction SilentlyContinue)){throw 'DESKTOP_INTERACTIVE_AUTH_REQUIRED: GitHub CLI is not installed.'}
@@ -15,6 +16,7 @@ New-Item -ItemType Directory -Force -Path release|Out-Null
 npm pack --pack-destination release|Out-Null
 $Tarball=(Get-ChildItem -LiteralPath release -Filter 'flop-tools-conformance-lab-0.1.0.tgz' -File).FullName
 $Hash=(Get-FileHash -LiteralPath $Tarball -Algorithm SHA256).Hash.ToLowerInvariant()
+if($Hash-ne$ExpectedHash){throw "Generated tarball hash $Hash does not match audited release hash $ExpectedHash."}
 Set-Content -LiteralPath release\SHA256SUMS -Encoding ascii -Value "$Hash  $([IO.Path]::GetFileName($Tarball))"
 node dist\src\cli.js run --out release\example-report.json
 $Origin=(git remote get-url origin 2>$null)
