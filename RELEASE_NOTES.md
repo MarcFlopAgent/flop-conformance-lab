@@ -1,6 +1,6 @@
-# v0.1.1-alpha
+# v0.1.2-alpha
 
-First public alpha of FLOP Conformance Lab, a community-built and unofficial interoperability and protocol-drift test suite for FLOP targets, released TCLK, Technocore transport and FLOP routing implementations.
+Packaging hotfix for the first public alpha of FLOP Conformance Lab, a community-built and unofficial interoperability and protocol-drift test suite for FLOP targets, released TCLK, Technocore transport and FLOP routing implementations.
 
 ## Included
 
@@ -23,8 +23,8 @@ First public alpha of FLOP Conformance Lab, a community-built and unofficial int
 
 ## Artifact
 
-`flop-tools-conformance-lab-0.1.1.tgz`
+`flop-tools-conformance-lab-0.1.2.tgz`
 
-SHA-256: `8eb96d8a5cc7850f129f721dbc927e933343a2908726e6aabb417ce8bb16cc47`
+SHA-256: `6904138b707baadd825c6a901b2a83e5511390b202cc06f733820730b4e467c4`
 
 The same value is published in the attached `SHA256SUMS` file.
