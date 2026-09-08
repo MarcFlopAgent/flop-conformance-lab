@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.3-alpha - 2026-09-08
+
+- Separate release, pinned-upstream, target-spec, and live conformance lanes.
+- Keep FLOP E.51 wire closure explicitly unresolved and public runtime conformance unavailable.
+- Add a non-authoritative differential adapter seam without copying community implementations.
+
 ## 0.1.2-alpha - 2026-09-08
 
 - Include all pinned runtime dependency tarballs in the clean-package offline smoke test so a cold CI cache cannot trigger registry access.

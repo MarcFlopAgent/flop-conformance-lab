@@ -14,9 +14,9 @@ This independent project is not an official FLOP Labs validator and carries no e
 - `signing`: malformed, wrong-domain and noncanonical payloads cannot reach a signer.
 - `integration`: signed-transport identity must match the TCLK frame party; protocol-valid and transport-representable values remain distinct.
 - `router`: optional adapter conformance against a built Session Router module.
-- `flop`: target-spec reporting only while the live runtime adapter is unavailable.
+- `flop`: target-spec reporting only while an authoritative public runtime adapter is unavailable; E.51 wire closure remains explicitly unresolved.
 
-`RELEASE_CONFORMANCE` is active against pinned `@flop-labs/tclk@0.1.0` vectors. `UPSTREAM_COMPARISON` is currently **partial / manifest-only**: the exact upstream SHA is recorded, but a second behavioral lane is not yet executed. Open pull requests and issues are provisional, never silently normative.
+`RELEASE_CONFORMANCE` is active against pinned `@flop-labs/tclk@0.1.0` vectors. `UPSTREAM_CONFORMANCE` is `MANIFEST_ONLY`: exact upstream SHAs are recorded but no second behavioral lane is claimed. `TARGET_SPEC_CONFORMANCE` is active for explicit target semantics. `LIVE_CONFORMANCE` is `PUBLIC_RUNTIME_UNAVAILABLE`. Open pull requests and issues are provisional, never silently normative.
 
 `UPSTREAM_COMPATIBILITY_WORKAROUND`: the released TCLK ID helpers hash every enumerable property supplied by the caller. The Lab exports `normativeOfferId` and `normativeContractId`, which whitelist only normative protocol fields so transport/runtime metadata cannot change an offer or contract ID. Official vectors remain unmodified; this workaround is covered by regression tests and should be removed only after a verified compatible upstream release.
 
@@ -36,13 +36,13 @@ Every command works with stdin closed. No passphrase, wallet, browser login or n
 
 ## Normative classifications
 
-Every result is marked `RELEASE_NORMATIVE`, `MAIN_NORMATIVE`, `PROVISIONAL_PR`, `OPEN_ISSUE`, `TARGET_SPEC`, or `LOCAL_TEST`. The release lane is pinned to package integrity and commit SHA. Floating `main` is never a deterministic CI dependency.
+Every result is marked `RELEASE_NORMATIVE`, `PINNED_UPSTREAM`, `PROVISIONAL_PR`, `OPEN_ISSUE`, `TARGET_SPEC`, or `LOCAL_POLICY`. The release lane is pinned to package integrity and commit SHA. Floating `main` is never a deterministic CI dependency.
 
 The FLOP Yellow Paper `0.5.0-draft` is an implementation target. Its Appendix H determines whether a mechanism is live, partial or planned. A target-spec pass is not a claim that a live compute channel exists.
 
 ## Maturity
 
-Release `v0.1.2-alpha` is an early public interoperability baseline. Coverage is intentionally focused, not exhaustive. The live FLOP runtime lane remains `RUNTIME_UNAVAILABLE`; TCLK `v0.1.0` itself is alpha and its shipped rehearsal rail does not move value.
+Release `v0.1.3-alpha` is an early public interoperability baseline. Coverage is intentionally focused, not exhaustive. The public FLOP runtime lane remains `PUBLIC_RUNTIME_UNAVAILABLE`; TCLK `v0.1.0` itself is alpha and its shipped rehearsal rail does not move value.
 
 ## Security
 
