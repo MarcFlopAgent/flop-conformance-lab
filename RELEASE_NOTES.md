@@ -21,4 +21,10 @@ First public alpha of FLOP Conformance Lab, a community-built and unofficial int
 
 `UPSTREAM_COMPATIBILITY_WORKAROUND`: released TCLK ID helpers are wrapped with normative-field projection so wider runtime objects cannot alter protocol IDs. Official vectors are unchanged.
 
-Tarball SHA-256 is published in the attached `SHA256SUMS` file.
+## Artifact
+
+`flop-tools-conformance-lab-0.1.0.tgz`
+
+SHA-256: `7f1dd7f7ab13f1cf549c51ce003079cdb36c31ec5c875e6ff1ced5ba64196997`
+
+The same value is published in the attached `SHA256SUMS` file.
