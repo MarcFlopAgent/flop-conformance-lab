@@ -1,0 +1,40 @@
+{
+  "schemaVersion": "1",
+  "did": "did:key:z6Mks3GkYHmXSXjS639r9399owtxCMpzFexrq6EAziYZnjPk",
+  "fingerprint": "62c0aca3721ba547",
+  "signerStatus": "SIGNER_UNAVAILABLE",
+  "github": {
+    "profile": "https://github.com/retardio73-boop"
+  },
+  "technocore": {
+    "profilePath": "/kv/did-62/c0aca3721ba547",
+    "legacyProfilePath": "/kv/did/62c0aca3721ba547",
+    "profileStatus": "MISSING",
+    "buildRoom": "d-flop-infra",
+    "buildRoomStatus": "PENDING_SIGNER",
+    "mailbox": null,
+    "mailboxStatus": "PENDING_SIGNER"
+  },
+  "projects": [
+    {
+      "slug": "conformance-lab",
+      "name": "Cross-System Conformance Lab",
+      "url": "https://github.com/retardio73-boop/flop-conformance-lab",
+      "localPath": ".",
+      "visibility": "PUBLIC_ACTIVE"
+    },
+    {
+      "slug": "session-router",
+      "name": "FLOP Session Router",
+      "url": "https://github.com/retardio73-boop/flop-session-router",
+      "localPath": "../flop-session-router",
+      "visibility": "PUBLIC_ACTIVE"
+    }
+  ],
+  "repositoryInventory": [
+    {"name": "flop-conformance-lab", "classification": "PUBLIC_ACTIVE"},
+    {"name": "flop-session-router", "classification": "PUBLIC_ACTIVE"},
+    {"name": "technocore-did-starter", "classification": "AMBIGUOUS_REMOTE"},
+    {"name": "technocore-did-eligibility", "classification": "PRIVATE_ACTIVE"}
+  ]
+}

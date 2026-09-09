@@ -1,0 +1,8 @@
+{
+  "schemaVersion": "1",
+  "status": "PENDING_SIGNER",
+  "did": "did:key:z6Mks3GkYHmXSXjS639r9399owtxCMpzFexrq6EAziYZnjPk",
+  "room": "d-flop-infra",
+  "lastObservedStatus": "EMPTY_OR_UNCLAIMED",
+  "note": "Ownership has not been claimed and no write is authorized until the exact DID signer is available."
+}

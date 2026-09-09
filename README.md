@@ -6,6 +6,10 @@ Interoperability, protocol-drift and boundary conformance testing across FLOP, T
 
 This independent project is not an official FLOP Labs validator and carries no endorsement. TCLK tests TCLK itself; this Lab focuses on boundaries between TCLK, Technocore signed transport, signing/canonicalization, routing implementations, and FLOP target semantics. It performs no settlement and requires no production DID, wallet, FLOP token, passphrase, or API key.
 
+## Builder identity
+
+Work in this repository is associated with `did:key:z6Mks3GkYHmXSXjS639r9399owtxCMpzFexrq6EAziYZnjPk`. See [public provenance](PROVENANCE.md) and the [identity page](identity/index.html). Signed Technocore binding remains explicitly pending until the existing exact-DID signer is available.
+
 ## Current lanes
 
 - `tclk`: consumes `@flop-labs/tclk@0.1.0` and immutable golden vectors from its released `tests/vectors.test.ts`.

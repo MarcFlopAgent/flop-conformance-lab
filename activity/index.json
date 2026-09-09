@@ -1,0 +1,18 @@
+{
+  "schemaVersion": "1",
+  "did": "did:key:z6Mks3GkYHmXSXjS639r9399owtxCMpzFexrq6EAziYZnjPk",
+  "generatedAt": "2026-09-09T14:41:14.621Z",
+  "fingerprints": [],
+  "metrics": {
+    "verified_public_events": 0,
+    "public_releases": 0,
+    "upstream_findings": 0,
+    "upstream_prs": 0,
+    "upstream_merges": 0,
+    "conformance_findings": 0,
+    "public_artifacts": 0,
+    "last_verified_activity": null
+  },
+  "pending": 0,
+  "records": []
+}

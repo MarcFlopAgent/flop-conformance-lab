@@ -1,0 +1,10 @@
+{
+  "schemaVersion": "1",
+  "status": "PENDING_SIGNER",
+  "did": "did:key:z6Mks3GkYHmXSXjS639r9399owtxCMpzFexrq6EAziYZnjPk",
+  "profilePath": "/kv/did-62/c0aca3721ba547",
+  "legacyProfilePath": "/kv/did/62c0aca3721ba547",
+  "existingCanonicalProfile": null,
+  "existingLegacyProfile": null,
+  "text": "did: did:key:z6Mks3GkYHmXSXjS639r9399owtxCMpzFexrq6EAziYZnjPk | builder: FLOP / Technocore / TCLK infrastructure | work: conformance-lab, session-router | github: https://github.com/retardio73-boop | build: d-flop-infra"
+}

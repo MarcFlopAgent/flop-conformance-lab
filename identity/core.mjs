@@ -1,0 +1,68 @@
+import {createHash,createPublicKey,randomBytes,verify as cryptoVerify} from "node:crypto";
+import {appendFileSync,existsSync,mkdirSync,readFileSync,readdirSync,renameSync,writeFileSync} from "node:fs";
+import {basename,dirname,join,resolve} from "node:path";
+import {execFileSync} from "node:child_process";
+
+export const TARGET_DID="did:key:z6Mks3GkYHmXSXjS639r9399owtxCMpzFexrq6EAziYZnjPk";
+export const TARGET_FINGERPRINT="62c0aca3721ba547";
+const B58="123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
+const ROOM=/^[a-z0-9][a-z0-9_-]{0,47}$/;
+const SHA=/^[0-9a-f]{40}$/;
+const NONCE=/^(0|[1-9][0-9]{0,18})$/;
+const SIG=/^[A-Za-z0-9_-]{86}$/;
+const EVENTS=new Set(["release","artifact","finding","upstream","build","interop","fix","test","provenance","milestone"]);
+const TRIVIAL=/\b(typo|formatting|dependency bump|routine ci|still working|heartbeat|daily status|gm)\b/i;
+
+export function canonical(v){
+  if(v===null||typeof v!=="object"){if(typeof v==="number"&&!Number.isFinite(v))throw Error("UNSUPPORTED_CANONICAL_VALUE");const x=JSON.stringify(v);if(x===undefined)throw Error("UNSUPPORTED_CANONICAL_VALUE");return x;}
+  if(Array.isArray(v))return `[${v.map(canonical).join(",")}]`;
+  return `{${Object.keys(v).sort().filter(k=>v[k]!==undefined).map(k=>`${JSON.stringify(k)}:${canonical(v[k])}`).join(",")}}`;
+}
+export const sha256=v=>createHash("sha256").update(typeof v==="string"||Buffer.isBuffer(v)?v:canonical(v)).digest("hex");
+export const fingerprintForDid=did=>sha256(did).slice(0,16);
+function b58(s){let n=0n;for(const c of s){const d=B58.indexOf(c);if(d<0)throw Error("INVALID_BASE58_DID");n=n*58n+BigInt(d);}let h=n.toString(16);if(h.length%2)h="0"+h;let z=0;for(const c of s){if(c==="1")z++;else break;}return Buffer.concat([Buffer.alloc(z),h?Buffer.from(h,"hex"):Buffer.alloc(0)]);}
+export function publicKeyForDid(did){if(!/^did:key:z[1-9A-HJ-NP-Za-km-z]+$/.test(did))throw Error("INVALID_DID");const m=b58(did.slice(9));if(m.length!==34||m[0]!==0xed||m[1]!==1)throw Error("DID_IS_NOT_ED25519");return createPublicKey({key:Buffer.concat([Buffer.from("302a300506032b6570032100","hex"),m.subarray(2)]),format:"der",type:"spki"});}
+export function verifyDidSignature(did,payload,signature){if(!SIG.test(signature))return false;try{return cryptoVerify(null,Buffer.from(payload),publicKeyForDid(did),Buffer.from(signature,"base64url"));}catch{return false;}}
+export async function detectSigner(signer,expected=TARGET_DID,challenge){if(!signer)return{status:"SIGNER_UNAVAILABLE"};const payload=challenge||Buffer.concat([Buffer.from("FLOP_BUILDER_SIGNER_CAPABILITY_V1|"),randomBytes(32)]);let did;try{did=await signer.did();}catch{return{status:"SIGNER_UNAVAILABLE"};}if(did!==expected)return{status:"SIGNER_MISMATCH",expectedDid:expected,actualDid:did};try{const sig=await signer.signCanonical(payload);return verifyDidSignature(expected,payload,sig)?{status:"SIGNER_AVAILABLE",did:expected}:{status:"SIGNER_MISMATCH",expectedDid:expected,actualDid:did};}catch{return{status:"SIGNER_UNAVAILABLE"};}}
+
+export function validateConfig(c){
+  if(!c||c.schemaVersion!=="1"||c.did!==TARGET_DID)throw Error("DID_MISMATCH");
+  if(fingerprintForDid(c.did)!==TARGET_FINGERPRINT||c.fingerprint!==TARGET_FINGERPRINT)throw Error("FINGERPRINT_MISMATCH");
+  if(c.technocore?.profilePath!=="/kv/did-62/c0aca3721ba547"||c.technocore?.legacyProfilePath!=="/kv/did/62c0aca3721ba547")throw Error("PROFILE_ROUTE_MISMATCH");
+  if(!ROOM.test(c.technocore.buildRoom)||!Array.isArray(c.projects))throw Error("INVALID_IDENTITY_CONFIG");
+  return c;
+}
+export function parseProfile(s=""){const o={};for(const f of s.split(" | ")){const i=f.indexOf(":");if(i>0)o[f.slice(0,i).trim()]=f.slice(i+1).trim();}return o;}
+export function renderProfile(c,existing=""){validateConfig(c);const old=parseProfile(existing),fresh={did:c.did,builder:"FLOP / Technocore / TCLK infrastructure",work:c.projects.filter(p=>p.visibility==="PUBLIC_ACTIVE").map(p=>p.slug).join(", "),github:c.github.profile,build:c.technocore.buildRoom};const m={...old,...fresh};if(c.technocore.mailbox)m.mailbox=c.technocore.mailbox;const order=["did","builder","work","github","build","mailbox"];return [...order.filter(k=>m[k]).map(k=>`${k}: ${m[k]}`),...Object.keys(m).sort().filter(k=>!order.includes(k)).map(k=>`${k}: ${m[k]}`)].join(" | ");}
+
+export function validateMilestone(x,c){
+  validateConfig(c);const keys=new Set(["type","project","summary","artifact","commit","createdAt"]);
+  if(!x||Object.keys(x).some(k=>!keys.has(k)))throw Error("INVALID_EVENT_SHAPE");
+  if(!EVENTS.has(x.type))throw Error("INSIGNIFICANT_EVENT_TYPE");
+  if(typeof x.summary!=="string"||x.summary.length<20||x.summary.length>240||TRIVIAL.test(x.summary))throw Error("TRIVIAL_OR_INVALID_EVENT");
+  if(!c.projects.some(p=>p.slug===x.project&&p.visibility==="PUBLIC_ACTIVE"))throw Error("PROJECT_NOT_PUBLIC_ACTIVE");
+  if(typeof x.artifact!=="string"||!/^https:\/\/github\.com\/[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+(?:\/.*)?$/.test(x.artifact))throw Error("INVALID_PUBLIC_ARTIFACT");
+  if(!SHA.test(x.commit))throw Error("INVALID_COMMIT_SHA");
+  const fingerprint=sha256([x.type,x.project,x.artifact,x.commit].join("|")),text=`${x.type} | ${x.project} | ${x.summary} | ${x.artifact} | sha:${x.commit}`;
+  if(text.length>4096||/[\r\n\u0000-\u001f\u007f]/.test(text))throw Error("INVALID_MESSAGE_TEXT");
+  return{...x,createdAt:x.createdAt||new Date().toISOString(),fingerprint,text};
+}
+export function ledgerDigest(r){const{digest,...body}=r;return"sha256:"+sha256(body);}
+export function validateLedgerRecord(r){
+  if(r.schemaVersion!=="1"||r.did!==TARGET_DID)throw Error("LEDGER_IDENTITY_MISMATCH");
+  if(r.technocore){const t=r.technocore;if(!ROOM.test(t.room)||!Number.isSafeInteger(t.seq)||t.seq<1||!NONCE.test(t.nonce)||!SIG.test(t.signature)||typeof t.text!=="string")throw Error("INVALID_TECHNOCORE_RECORD");if(!verifyDidSignature(r.did,`${t.room}|${t.nonce}|${t.text}`,t.signature))throw Error("INVALID_TECHNOCORE_SIGNATURE");}
+  else if(r.publicationStatus!=="PENDING_SIGNER")throw Error("MISSING_TECHNOCORE_COORDINATE");
+  if(ledgerDigest(r)!==r.digest)throw Error("LEDGER_DIGEST_MISMATCH");return true;
+}
+function atomic(path,value){mkdirSync(dirname(path),{recursive:true});const tmp=path+".tmp";writeFileSync(tmp,JSON.stringify(value,null,2)+"\n",{encoding:"utf8",mode:0o600});renameSync(tmp,path);}
+export const loadConfig=root=>validateConfig(JSON.parse(readFileSync(join(root,"identity","builder.json"),"utf8")));
+export function loadIndex(root){const p=join(root,"activity","index.json");return existsSync(p)?JSON.parse(readFileSync(p,"utf8")):{schemaVersion:"1",did:TARGET_DID,fingerprints:[],metrics:{}};}
+export function queueMilestone(root,input){const c=loadConfig(root),e=validateMilestone(input,c),index=loadIndex(root);if(index.fingerprints.includes(e.fingerprint))throw Error("MILESTONE_ALREADY_PUBLISHED");const p=join(root,"identity","pending","events",e.fingerprint+".json");if(existsSync(p))return JSON.parse(readFileSync(p,"utf8"));const q={schemaVersion:"1",status:"PENDING_SIGNER",did:c.did,room:c.technocore.buildRoom,text:e.text,eventType:e.type,project:e.project,summary:e.summary,artifact:e.artifact,commit:e.commit,fingerprint:e.fingerprint,createdAt:e.createdAt};atomic(p,q);return q;}
+function allRecords(root){const d=join(root,"activity");if(!existsSync(d))return[];return readdirSync(d).filter(f=>/^\d{4}-\d{2}\.jsonl$/.test(f)).sort().flatMap(f=>readFileSync(join(d,f),"utf8").split(/\r?\n/).filter(Boolean).map(line=>JSON.parse(line)));}
+export function rebuildIndex(root){const all=allRecords(root);all.forEach(validateLedgerRecord);const v=all.filter(x=>x.verificationStatus==="VERIFIED"),pd=join(root,"identity","pending","events");const metrics={verified_public_events:v.length,public_releases:v.filter(x=>x.eventType==="release").length,upstream_findings:v.filter(x=>["finding","upstream"].includes(x.eventType)).length,upstream_prs:v.filter(x=>/\/pull\/\d+/.test(x.artifact)).length,upstream_merges:v.filter(x=>x.metadata?.merged===true).length,conformance_findings:v.filter(x=>x.project==="conformance-lab"&&x.eventType==="finding").length,public_artifacts:v.filter(x=>x.artifact).length,last_verified_activity:v.at(-1)?.technocore?.timestamp||null};const index={schemaVersion:"1",did:TARGET_DID,generatedAt:new Date().toISOString(),fingerprints:all.map(x=>x.fingerprint),metrics,pending:existsSync(pd)?readdirSync(pd).filter(x=>x.endsWith(".json")).length:0,records:all.map(x=>({digest:x.digest,date:x.technocore?.timestamp||x.createdAt,eventType:x.eventType,project:x.project,artifact:x.artifact,commit:x.commit,technocore:x.technocore?{room:x.technocore.room,seq:x.technocore.seq}:null,verificationStatus:x.verificationStatus}))};atomic(join(root,"activity","index.json"),index);return index;}
+export function validateSignedEnvelope(p,e){const keys=new Set(["did","room","nonce","signature","text"]);if(!e||Object.keys(e).some(k=>!keys.has(k))||e.did!==TARGET_DID||e.room!==p.room||e.text!==p.text||!NONCE.test(e.nonce)||!SIG.test(e.signature))throw Error("SIGNED_ENVELOPE_MISMATCH");if(!verifyDidSignature(e.did,`${e.room}|${e.nonce}|${e.text}`,e.signature))throw Error("SIGNED_ENVELOPE_SIGNATURE_INVALID");return e;}
+async function boundedJson(url,options={},cap=65536){const ctl=new AbortController(),timer=setTimeout(()=>ctl.abort(),10000);try{const r=await fetch(url,{...options,signal:ctl.signal,redirect:"error"}),text=await r.text();if(Buffer.byteLength(text)>cap)throw Error("TECHNOCORE_RESPONSE_TOO_LARGE");if(!r.ok)throw Error(`TECHNOCORE_HTTP_${r.status}`);const v=JSON.parse(text);if(!v||typeof v!=="object"||Array.isArray(v))throw Error("INVALID_TECHNOCORE_JSON");return v;}finally{clearTimeout(timer);}}
+export async function publishSigned(root,p,e,base="https://technocore.chat"){validateSignedEnvelope(p,e);if(base!=="https://technocore.chat")throw Error("UNTRUSTED_TECHNOCORE_ORIGIN");const room=encodeURIComponent(e.room),posted=await boundedJson(`${base}/r/${room}`,{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({did:e.did,sig:e.signature,nonce:e.nonce,text:e.text})});const candidate=posted.posted;if(!candidate||!Number.isSafeInteger(candidate.seq)||candidate.seq<1)throw Error("TECHNOCORE_WRITE_UNCONFIRMED");const view=await boundedJson(`${base}/r/${room}?format=json&since=${candidate.seq-1}&limit=20&n=${Date.now()}`),found=Array.isArray(view.messages)&&view.messages.find(x=>x.seq===candidate.seq&&x.from===TARGET_DID&&String(x.nonce)===e.nonce&&x.sig===e.signature&&x.text===e.text);if(!found)throw Error("TECHNOCORE_READBACK_UNVERIFIED");const r={schemaVersion:"1",did:TARGET_DID,eventType:p.eventType,project:p.project,summary:p.summary,artifact:p.artifact,commit:p.commit,fingerprint:p.fingerprint,createdAt:p.createdAt,publicationStatus:"PUBLISHED",verificationStatus:"VERIFIED",technocore:{room:e.room,seq:found.seq,timestamp:found.ts,nonce:e.nonce,signature:e.signature,text:e.text}};r.digest=ledgerDigest(r);validateLedgerRecord(r);const file=join(root,"activity",String(found.ts||new Date().toISOString()).slice(0,7)+".jsonl");mkdirSync(dirname(file),{recursive:true});appendFileSync(file,JSON.stringify(r)+"\n","utf8");return r;}
+export async function flushPending(root){const pd=join(root,"identity","pending","events"),sd=join(root,"identity","runtime","signed"),out=[];if(!existsSync(pd))return out;for(const f of readdirSync(pd).filter(x=>x.endsWith(".json")).sort()){const p=JSON.parse(readFileSync(join(pd,f),"utf8")),s=join(sd,basename(f));if(!existsSync(s)){out.push({fingerprint:p.fingerprint,status:"PENDING_SIGNER"});continue;}const r=await publishSigned(root,p,JSON.parse(readFileSync(s,"utf8")));mkdirSync(join(root,"identity","pending","archive"),{recursive:true});renameSync(join(pd,f),join(root,"identity","pending","archive",f));out.push({fingerprint:p.fingerprint,status:"VERIFIED",digest:r.digest});}rebuildIndex(root);return out;}
+export function verifyRepositoryState(root){const c=loadConfig(root),checks=[],add=(name,status,detail)=>checks.push({name,status,detail});try{publicKeyForDid(c.did);add("did.format","PASS",c.did);}catch(e){add("did.format","FAIL",e.message);}add("did.fingerprint",fingerprintForDid(c.did)===TARGET_FINGERPRINT?"PASS":"FAIL",c.fingerprint);try{rebuildIndex(root);add("activity.ledger","PASS","digests and signatures valid");}catch(e){add("activity.ledger","FAIL",e.message);}for(const p of c.projects.filter(x=>x.visibility==="PUBLIC_ACTIVE")){const repo=p.localPath?resolve(root,p.localPath):"",f=repo?join(repo,"PROVENANCE.md"):"",body=f&&existsSync(f)?readFileSync(f,"utf8"):"";add(`provenance.${p.slug}`,body.includes(TARGET_DID)?"PASS":"WARN",body?f:"missing provenance file");for(const pending of pendingForProject(root,p.slug)){try{execFileSync("git",["-C",repo,"cat-file","-e",`${pending.commit}^{commit}`],{stdio:"ignore",timeout:5000});add(`commit.${p.slug}.${pending.fingerprint.slice(0,8)}`,"PASS",pending.commit);}catch{add(`commit.${p.slug}.${pending.fingerprint.slice(0,8)}`,"WARN",`commit not present locally: ${pending.commit}`);}}}return checks;}
+function pendingForProject(root,slug){const dir=join(root,"identity","pending","events");if(!existsSync(dir))return[];return readdirSync(dir).filter(f=>f.endsWith(".json")).map(f=>JSON.parse(readFileSync(join(dir,f),"utf8"))).filter(x=>x.project===slug);}

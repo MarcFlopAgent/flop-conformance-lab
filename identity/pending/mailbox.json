@@ -1,0 +1,7 @@
+{
+  "schemaVersion": "1",
+  "status": "PENDING_SIGNER",
+  "did": "did:key:z6Mks3GkYHmXSXjS639r9399owtxCMpzFexrq6EAziYZnjPk",
+  "mailbox": null,
+  "note": "No mailbox coordinate is claimed until ownership can be established by the exact DID signer."
+}
