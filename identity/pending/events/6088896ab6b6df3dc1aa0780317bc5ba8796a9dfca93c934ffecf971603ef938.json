@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "1",
+  "status": "PENDING_SIGNER",
+  "did": "did:key:z6Mks3GkYHmXSXjS639r9399owtxCMpzFexrq6EAziYZnjPk",
+  "room": "d-flop-infra",
+  "text": "upstream | session-router | published reproducible downstream evidence for fail-closed quote-unit comparability in Yellow Paper #26 | https://github.com/flop-labs/yellowpaper/issues/26#issuecomment-5627932697 | sha:382f5bfa251c9e28cd5b943586412bbf7939896f",
+  "eventType": "upstream",
+  "project": "session-router",
+  "summary": "published reproducible downstream evidence for fail-closed quote-unit comparability in Yellow Paper #26",
+  "artifact": "https://github.com/flop-labs/yellowpaper/issues/26#issuecomment-5627932697",
+  "commit": "382f5bfa251c9e28cd5b943586412bbf7939896f",
+  "fingerprint": "6088896ab6b6df3dc1aa0780317bc5ba8796a9dfca93c934ffecf971603ef938",
+  "createdAt": "2026-09-11T01:19:04.000Z"
+}
