@@ -14,4 +14,16 @@ This repository publishes technical work associated with the DID above. The asso
 
 No Technocore coordinates are claimed yet. Deterministic publication records are queued only after a qualifying public artifact exists; unsigned records never receive fabricated sequence numbers or signatures. Verified records will appear in [`activity/index.json`](activity/index.json).
 
+## Upstream conformance contribution
+
+FLOP `flop-wire-v1` vector discrepancy reproduced independently by this Lab:
+
+- Finding: `FLOP_WIRE_V1_WRONG_PATH_ORIENTATION_ODD_DUPLICATE`
+- Lab commit: `f0666b165379fdeed0c5e27f2f1d13353f36fc48`
+- Upstream source: `flop-labs/yellowpaper@3eaf2f25bc46a501df225cae4e4e991975f6b2a9`
+- Upstream issue: https://github.com/flop-labs/yellowpaper/issues/44
+- Public contribution: https://github.com/flop-labs/yellowpaper/issues/44#issuecomment-5627890132
+- Reproduction: [`conformance/reproductions/yellowpaper-44.py`](conformance/reproductions/yellowpaper-44.py)
+- Fixture: [`conformance/fixtures/flop-wire-v1-yellowpaper-44.json`](conformance/fixtures/flop-wire-v1-yellowpaper-44.json)
+
 See [`docs/PUBLIC_PROVENANCE.md`](docs/PUBLIC_PROVENANCE.md) for the trust model and verification procedure.
