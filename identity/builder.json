@@ -11,9 +11,11 @@
     "legacyProfilePath": "/kv/did/62c0aca3721ba547",
     "profileStatus": "MISSING",
     "buildRoom": "d-flop-infra",
-    "buildRoomStatus": "PENDING_SIGNER",
+    "buildRoomStatus": "ACTIVITY_VERIFIED",
+    "buildRoomActivityStatus": "VERIFIED",
+    "buildRoomOwnershipStatus": "UNVERIFIED",
     "mailbox": null,
-    "mailboxStatus": "PENDING_SIGNER"
+    "mailboxStatus": "PENDING_PUBLICATION"
   },
   "projects": [
     {
