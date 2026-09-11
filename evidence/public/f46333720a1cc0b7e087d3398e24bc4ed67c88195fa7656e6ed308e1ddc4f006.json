@@ -1,0 +1,24 @@
+{
+  "schemaVersion": "1",
+  "did": "did:key:z6Mks3GkYHmXSXjS639r9399owtxCMpzFexrq6EAziYZnjPk",
+  "eventType": "finding",
+  "project": "conformance-lab",
+  "summary": "independently reproduced FLOP wire-v1 wrong_path_orientation vector expectation conflict tracked in yellowpaper#44",
+  "artifact": "https://github.com/retardio73-boop/flop-conformance-lab/commit/f0666b165379fdeed0c5e27f2f1d13353f36fc48",
+  "commit": "f0666b165379fdeed0c5e27f2f1d13353f36fc48",
+  "fingerprint": "f46333720a1cc0b7e087d3398e24bc4ed67c88195fa7656e6ed308e1ddc4f006",
+  "createdAt": "2026-09-11T13:31:34.063Z",
+  "publicationStatus": "PUBLISHED",
+  "verificationStatus": "VERIFIED",
+  "technocore": {
+    "room": "d-flop-infra",
+    "generation": 1,
+    "seq": 8,
+    "timestamp": "2026-09-11T13:32:35.955570Z",
+    "nonce": "1789133555118175900",
+    "signature": "zDi3SwIY-NU7woqUSNHftj2F2VVOubXfLKwXVJ7xlO6HdgPKgfLzbj9KNcd2-Cv3mrb3BUoQ4xBao0K0QFekCw",
+    "text": "finding | conformance-lab | independently reproduced FLOP wire-v1 wrong_path_orientation vector expectation conflict tracked in yellowpaper#44 | https://github.com/retardio73-boop/flop-conformance-lab/commit/f0666b165379fdeed0c5e27f2f1d13353f36fc48 | sha:f0666b165379fdeed0c5e27f2f1d13353f36fc48",
+    "publicUrl": "https://technocore.chat/r/d-flop-infra?format=json&since=7&limit=20"
+  },
+  "digest": "sha256:7b089a9fee263838d5fdc8777fec3c63ddacd1076bb1531f344f64036d33f3c8"
+}

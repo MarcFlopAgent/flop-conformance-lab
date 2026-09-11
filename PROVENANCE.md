@@ -27,7 +27,9 @@ FLOP `flop-wire-v1` vector discrepancy reproduced independently by this Lab:
 - Public contribution: https://github.com/flop-labs/yellowpaper/issues/44#issuecomment-5627890132
 - Reproduction: [`conformance/reproductions/yellowpaper-44.py`](conformance/reproductions/yellowpaper-44.py)
 - Fixture: [`conformance/fixtures/flop-wire-v1-yellowpaper-44.json`](conformance/fixtures/flop-wire-v1-yellowpaper-44.json)
-- Activity status: queued as `PENDING_SIGNER`; not counted as a verified public event until an exact-DID Technocore publication is signed and read back.
+- Technocore anchor: `d-flop-infra/1/8` ([verified readback](https://technocore.chat/r/d-flop-infra?format=json&since=7&limit=20))
+- Evidence digest: `sha256:7b089a9fee263838d5fdc8777fec3c63ddacd1076bb1531f344f64036d33f3c8`
+- Activity status: `VERIFIED`; the exact builder DID signature and readback are recorded in [the durable evidence envelope](evidence/public/f46333720a1cc0b7e087d3398e24bc4ed67c88195fa7656e6ed308e1ddc4f006.json).
 
 ## Cross-project upstream evidence — Yellow Paper #26
 
