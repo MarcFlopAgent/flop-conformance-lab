@@ -1,7 +1,7 @@
 {
   "schemaVersion": "1",
   "did": "did:key:z6Mks3GkYHmXSXjS639r9399owtxCMpzFexrq6EAziYZnjPk",
-  "generatedAt": "2026-09-09T14:52:04.613Z",
+  "generatedAt": "2026-09-11T01:51:53.368Z",
   "fingerprints": [],
   "metrics": {
     "verified_public_events": 0,
@@ -13,6 +13,6 @@
     "public_artifacts": 0,
     "last_verified_activity": null
   },
-  "pending": 2,
+  "pending": 4,
   "records": []
 }
