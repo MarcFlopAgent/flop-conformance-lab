@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "1",
+  "status": "PENDING_SIGNER",
+  "did": "did:key:z6Mks3GkYHmXSXjS639r9399owtxCMpzFexrq6EAziYZnjPk",
+  "room": "d-flop-infra",
+  "text": "finding | conformance-lab | independently reproduced FLOP flop-wire-v1 wrong_path_orientation corpus expectation discrepancy in Yellow Paper #44 | https://github.com/flop-labs/yellowpaper/issues/44#issuecomment-5627890132 | sha:f0666b165379fdeed0c5e27f2f1d13353f36fc48",
+  "eventType": "finding",
+  "project": "conformance-lab",
+  "summary": "independently reproduced FLOP flop-wire-v1 wrong_path_orientation corpus expectation discrepancy in Yellow Paper #44",
+  "artifact": "https://github.com/flop-labs/yellowpaper/issues/44#issuecomment-5627890132",
+  "commit": "f0666b165379fdeed0c5e27f2f1d13353f36fc48",
+  "fingerprint": "03f0754ea5c75cc2a64fd88233d57cebdc3ec68379ee76c66ed5c0e80660fb9c",
+  "createdAt": "2026-09-11T01:14:35.000Z"
+}
