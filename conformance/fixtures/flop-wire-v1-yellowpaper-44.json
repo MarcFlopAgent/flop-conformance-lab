@@ -1,0 +1,29 @@
+{
+  "schemaVersion": "1",
+  "id": "FLOP_WIRE_V1_WRONG_PATH_ORIENTATION_ODD_DUPLICATE",
+  "classification": "UPSTREAM_VECTOR_EXPECTATION_CONFLICT",
+  "upstream": {
+    "repository": "flop-labs/yellowpaper",
+    "commit": "3eaf2f25bc46a501df225cae4e4e991975f6b2a9",
+    "profile": "flop-wire-v1",
+    "vector": "wrong_path_orientation",
+    "path": "evidence/wire-format-v1.json",
+    "expected": "reject LeafNotInRoot",
+    "issue": "https://github.com/flop-labs/yellowpaper/issues/44"
+  },
+  "merkle": {
+    "leaf_v3_hex": "8ca5d489cec0a255a48a2e3c2149d8028597e03ea78628d9a3672ddb80df2869",
+    "path_for_index_2": [
+      {
+        "sibling_hex": "8ca5d489cec0a255a48a2e3c2149d8028597e03ea78628d9a3672ddb80df2869",
+        "sibling_is_left": false
+      },
+      {
+        "sibling_hex": "482735fe0838313af87270c7fa678a8fb6c3cf9d9e3af35b8c73ea39f279a92a",
+        "sibling_is_left": true
+      }
+    ],
+    "root_hex": "1020281304e2677e48c1093e7f5069fc8fbff1ea82daf2ac5b2b49d7cef756ed",
+    "odd_node_behavior": "duplicate last"
+  }
+}
