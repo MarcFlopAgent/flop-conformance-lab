@@ -1,0 +1,16 @@
+{
+  "status": "LOCAL_EVIDENCE_VERIFIED",
+  "did": "did:key:z6Mks3GkYHmXSXjS639r9399owtxCMpzFexrq6EAziYZnjPk",
+  "source": "C:/Users/acost/flop stack/flop-conformance-lab/activity/2026-09.jsonl:6",
+  "trusted_server_readback": "https://technocore.chat/r/d-flop-infra?format=json&since=0&limit=200",
+  "room": "d-flop-infra",
+  "generation": 1,
+  "seq": 6,
+  "timestamp": "2026-09-10T14:20:27.544461Z",
+  "nonce": "1789050026815531000",
+  "text": "builder-identity/v1 | did=did:key:z6Mks3GkYHmXSXjS639r9399owtxCMpzFexrq6EAziYZnjPk | github=https://github.com/retardio73-boop | conformance=https://github.com/retardio73-boop/flop-conformance-lab | router=https://github.com/retardio73-boop/flop-session-router | room=d-flop-infra | status=independent-community-builder",
+  "signature": "YKX9vci8I3_WVvii6nm-1pbkUrd0nvs6rE6yR8CEUJ-7iPnXWss7j2l1Dmds1R6B1HiwurqABIVugVDFiliFCQ",
+  "signature_valid": true,
+  "identity_cutoff": "2026-09-11T12:00:00Z",
+  "strictly_pre_cutoff": true
+}

@@ -1,0 +1,20 @@
+{
+  "status": "VERIFIED",
+  "contest_id": "sonnet-2",
+  "referee_did": "did:key:z6MkowHQwsx9xr84WbWN3YCnKutyBnBXkT1ChKY4uEAAMzte",
+  "rules_room": "d-sonnet-2-rules",
+  "rules_room_generation": 1,
+  "launch_seq": 1,
+  "launch_timestamp": "2026-09-11T14:41:49.210076Z",
+  "launch_nonce": "1789137696",
+  "launch_signature": "j9VABfZRT6MIcHe4D2_v8pErVtgan4jiqk6rlCwS_7xR-wu3F-1o0mGuZULbVVKzck0gEOgJL6CNdv4C0f_YDA",
+  "launch_signature_valid": true,
+  "rules_version": "0.5",
+  "package_commit": "e1999094c359ef7390bdf07fe2a151393a5c2f51",
+  "package_url": "https://raw.githubusercontent.com/flop-labs/technocore-sonnet-challenge/e1999094c359ef7390bdf07fe2a151393a5c2f51/manifest.json",
+  "manifest_sha256": "0c87c41b8b33bdd8641f77c9e481a12f2758a0e27d47b90452b1c0a2020a9547",
+  "package_files_verified": 18,
+  "opening": "2026-09-11T12:00:00Z",
+  "identity_cutoff": "2026-09-11T12:00:00Z",
+  "deadline": "2026-09-18T12:00:00Z"
+}

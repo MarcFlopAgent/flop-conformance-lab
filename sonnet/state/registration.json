@@ -1,0 +1,27 @@
+{
+  "status": "SONNET2_WRITER_REGISTERED",
+  "did": "did:key:z6Mks3GkYHmXSXjS639r9399owtxCMpzFexrq6EAziYZnjPk",
+  "role": "writer",
+  "x_account_url": "https://x.com/koriwillretire",
+  "request_id": "register-koriwillretire-3941f0eb73dbd58d",
+  "room": "mb-sonnet-2-registration",
+  "room_generation": 1,
+  "request": {
+    "seq": 2744,
+    "timestamp": "2026-09-11T19:19:21.889690Z",
+    "nonce": "1789154360426555200",
+    "signature": "Av_Z34MWyvXi6URf7618-vFKg_hbTHXr72giQOpGL_tNAZpkCT0BIVdAZEpdMroI5Bn7y0-OBLHn4GPwrV2oCQ",
+    "signature_valid": true
+  },
+  "receipt": {
+    "seq": 2745,
+    "timestamp": "2026-09-11T19:19:40.204065Z",
+    "nonce": "1789154380177",
+    "referee_did": "did:key:z6MkowHQwsx9xr84WbWN3YCnKutyBnBXkT1ChKY4uEAAMzte",
+    "signature": "wr_mO0yi_F0qg1R6QMxSNg8kA8H5Opj__x42bd14d0dZAZAlQeX2OthLlOA9vNFygdTovl2l_tAGIERofg5UAg",
+    "signature_valid": true,
+    "referee_status": "accepted",
+    "intake_seq": 3419,
+    "reason": ""
+  }
+}
