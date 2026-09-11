@@ -2,10 +2,11 @@
 import {existsSync,readFileSync,readdirSync} from "node:fs";
 import {dirname,join} from "node:path";
 import {fileURLToPath} from "node:url";
-import {TARGET_DID,TARGET_FINGERPRINT,detectSigner,flushPending,loadConfig,loadIndex,queueMilestone,renderProfile,verifyRepositoryState} from "./core.mjs";
+import {TARGET_DID,TARGET_FINGERPRINT,detectSigner,flushPending,loadConfig,loadIndex,preparePendingSignatures,queueMilestone,renderProfile,verifyRepositoryState} from "./core.mjs";
+import {enrollPersistentSigner,loadPersistentSigner} from "./persistent-signer.mjs";
 
 const root=dirname(dirname(fileURLToPath(import.meta.url)));
-const [command,arg]=process.argv.slice(2);
+const [command,...args]=process.argv.slice(2),arg=args[0];
 const emit=value=>console.log(JSON.stringify(value,null,2));
 
 async function profileStatus(config){
@@ -21,23 +22,25 @@ async function profileStatus(config){
 
 async function main(){
   const config=loadConfig(root);
-  if(command==="signer-check")return emit(await detectSigner(null));
+  if(command==="signer-check")return emit(await detectSigner(await loadPersistentSigner(root,TARGET_DID)));
+  if(command==="signer-enroll"){await enrollPersistentSigner(root,TARGET_DID);return emit(await detectSigner(await loadPersistentSigner(root,TARGET_DID)));}
   if(command==="publish-milestone"){
     if(!arg)throw Error("usage: identity publish-milestone EVENT.json");
     return emit(queueMilestone(root,JSON.parse(readFileSync(arg,"utf8"))));
   }
   if(command==="flush-pending")return emit(await flushPending(root));
-  if(command==="render-profile")return emit({status:"PENDING_SIGNER",profile:renderProfile(config)});
+  if(command==="prepare-signatures"){const signer=await loadPersistentSigner(root,TARGET_DID);if(!signer)throw Error("SIGNER_UNAVAILABLE");return emit(await preparePendingSignatures(root,signer,args));}
+  if(command==="render-profile")return emit({status:(await detectSigner(await loadPersistentSigner(root,TARGET_DID))).status,profile:renderProfile(config)});
   if(command==="status"){
-    const index=loadIndex(root),pendingDir=join(root,"identity","pending","events");
-    return emit({did:TARGET_DID,fingerprint:TARGET_FINGERPRINT,signer:config.signerStatus,technocoreProfile:await profileStatus(config),buildRoom:config.technocore.buildRoom,buildRoomStatus:config.technocore.buildRoomStatus,mailbox:config.technocore.mailbox,githubProvenance:config.projects.filter(project=>project.visibility==="PUBLIC_ACTIVE").length,activityLedger:index.metrics,pending:existsSync(pendingDir)?readdirSync(pendingDir).filter(name=>name.endsWith(".json")).length:0});
+    const index=loadIndex(root),pendingDir=join(root,"identity","pending","events"),signer=await detectSigner(await loadPersistentSigner(root,TARGET_DID));
+    return emit({did:TARGET_DID,fingerprint:TARGET_FINGERPRINT,signer:signer.status,technocoreProfile:await profileStatus(config),buildRoom:config.technocore.buildRoom,buildRoomStatus:config.technocore.buildRoomStatus,mailbox:config.technocore.mailbox,githubProvenance:config.projects.filter(project=>project.visibility==="PUBLIC_ACTIVE").length,activityLedger:index.metrics,pending:existsSync(pendingDir)?readdirSync(pendingDir).filter(name=>name.endsWith(".json")).length:0});
   }
   if(command==="verify"){
     const checks=verifyRepositoryState(root);
     const result=checks.some(check=>check.status==="FAIL")?"FAIL":checks.some(check=>check.status==="WARN")?"WARN":"PASS";
     return emit({did:TARGET_DID,result,checks});
   }
-  throw Error("usage: identity <status|verify|signer-check|render-profile|publish-milestone|flush-pending>");
+  throw Error("usage: identity <status|verify|signer-enroll|signer-check|render-profile|publish-milestone|prepare-signatures [FILE...]|flush-pending>");
 }
 
 main().catch(error=>{console.error(JSON.stringify({error:error.message}));process.exitCode=1;});

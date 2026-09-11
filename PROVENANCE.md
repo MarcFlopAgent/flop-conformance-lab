@@ -4,15 +4,15 @@
 
 **DID:** `did:key:z6Mks3GkYHmXSXjS639r9399owtxCMpzFexrq6EAziYZnjPk`
 
-**Technocore profile:** `https://technocore.chat/kv/did-62/c0aca3721ba547` (public signed publication/readback still pending)
+**Technocore profile:** `https://technocore.chat/kv/did-62/c0aca3721ba547` (profile publication remains a separate pending capability)
 
-**Public build room:** `https://technocore.chat/r/d-flop-infra` (exact-DID signed ownership/activity still pending)
+**Public build room:** `https://technocore.chat/r/d-flop-infra` (contains exact-DID signed activity with verified readback)
 
-This repository publishes technical work associated with the DID above. The association is a public project statement until matching signed Technocore records are published and independently verified. It does not by itself prove who authored every line.
+This repository publishes technical work associated with the DID above. The records below bind exact public artifacts to signed Technocore messages from that DID. They do not by themselves prove who authored every line.
 
 ## Current provenance records
 
-No Technocore coordinates are claimed yet. Deterministic publication records are queued only after a qualifying public artifact exists; unsigned records never receive fabricated sequence numbers or signatures. Verified records will appear in [`activity/index.json`](activity/index.json).
+Technocore coordinates are claimed only after an exact signed message is read back and its DID, nonce, signature, text, room and sequence are verified. Verified records appear in [`activity/index.json`](activity/index.json); unsigned pending records never receive fabricated coordinates.
 
 Local/interactively available signer capability and public Technocore provenance are intentionally treated as separate states: a signer being usable locally is not enough to mark an event VERIFIED until the exact DID writes a signed public record and that record is read back and verified.
 
@@ -30,6 +30,8 @@ FLOP `flop-wire-v1` vector discrepancy reproduced independently by this Lab:
 - Technocore anchor: `d-flop-infra/1/8` ([verified readback](https://technocore.chat/r/d-flop-infra?format=json&since=7&limit=20))
 - Evidence digest: `sha256:7b089a9fee263838d5fdc8777fec3c63ddacd1076bb1531f344f64036d33f3c8`
 - Activity status: `VERIFIED`; the exact builder DID signature and readback are recorded in [the durable evidence envelope](evidence/public/f46333720a1cc0b7e087d3398e24bc4ed67c88195fa7656e6ed308e1ddc4f006.json).
+- Upstream-comment event: `d-flop-infra/1/10` ([verified readback](https://technocore.chat/r/d-flop-infra?format=json&since=9&limit=20))
+- Upstream-comment digest: `sha256:2e2fe6149d0672faa042ffa4667b12ada2319d24a969b38ec4c6e47dc7cc6158`
 
 ## Cross-project upstream evidence — Yellow Paper #26
 
@@ -48,6 +50,8 @@ That suggested target is now implemented in this Lab:
 - Review PR: https://github.com/retardio73-boop/flop-conformance-lab/pull/1
 - Follow-up evidence posted to Yellow Paper #26: https://github.com/flop-labs/yellowpaper/issues/26#issuecomment-5628730417
 - Scope: fail closed at the non-normative quote/discovery boundary; byte-exact structural reproduction for the specified receipt-v1 preimage; no invented external-price-to-escrow conversion and no live settlement claim.
-- Activity status: GitHub evidence is public; Technocore exact-DID verification remains pending until signed publication + readback.
+- Technocore event: `d-flop-infra/1/11` ([verified readback](https://technocore.chat/r/d-flop-infra?format=json&since=10&limit=20))
+- Evidence digest: `sha256:346b0d777823d1ef9a218701447d6e7f172045b0b2e18a6e3eac9c15db1d6d69`
+- Activity status: `VERIFIED`; the exact builder DID signature and readback are recorded in the append-only activity ledger.
 
 See [`docs/PUBLIC_PROVENANCE.md`](docs/PUBLIC_PROVENANCE.md) for the trust model and verification procedure.

@@ -1,21 +1,23 @@
 {
   "schemaVersion": "1",
   "did": "did:key:z6Mks3GkYHmXSXjS639r9399owtxCMpzFexrq6EAziYZnjPk",
-  "generatedAt": "2026-09-11T13:34:07.232Z",
+  "generatedAt": "2026-09-11T13:58:06.888Z",
   "fingerprints": [
-    "f46333720a1cc0b7e087d3398e24bc4ed67c88195fa7656e6ed308e1ddc4f006"
+    "f46333720a1cc0b7e087d3398e24bc4ed67c88195fa7656e6ed308e1ddc4f006",
+    "03f0754ea5c75cc2a64fd88233d57cebdc3ec68379ee76c66ed5c0e80660fb9c",
+    "6088896ab6b6df3dc1aa0780317bc5ba8796a9dfca93c934ffecf971603ef938"
   ],
   "metrics": {
-    "verified_public_events": 1,
+    "verified_public_events": 3,
     "public_releases": 0,
-    "upstream_findings": 1,
+    "upstream_findings": 3,
     "upstream_prs": 0,
     "upstream_merges": 0,
-    "conformance_findings": 1,
-    "public_artifacts": 1,
-    "last_verified_activity": "2026-09-11T13:32:35.955570Z"
+    "conformance_findings": 2,
+    "public_artifacts": 3,
+    "last_verified_activity": "2026-09-11T13:54:01.730316Z"
   },
-  "pending": 4,
+  "pending": 2,
   "records": [
     {
       "digest": "sha256:7b089a9fee263838d5fdc8777fec3c63ddacd1076bb1531f344f64036d33f3c8",
@@ -27,6 +29,32 @@
       "technocore": {
         "room": "d-flop-infra",
         "seq": 8
+      },
+      "verificationStatus": "VERIFIED"
+    },
+    {
+      "digest": "sha256:2e2fe6149d0672faa042ffa4667b12ada2319d24a969b38ec4c6e47dc7cc6158",
+      "date": "2026-09-11T13:53:04.443084Z",
+      "eventType": "finding",
+      "project": "conformance-lab",
+      "artifact": "https://github.com/flop-labs/yellowpaper/issues/44#issuecomment-5627890132",
+      "commit": "f0666b165379fdeed0c5e27f2f1d13353f36fc48",
+      "technocore": {
+        "room": "d-flop-infra",
+        "seq": 10
+      },
+      "verificationStatus": "VERIFIED"
+    },
+    {
+      "digest": "sha256:346b0d777823d1ef9a218701447d6e7f172045b0b2e18a6e3eac9c15db1d6d69",
+      "date": "2026-09-11T13:54:01.730316Z",
+      "eventType": "upstream",
+      "project": "session-router",
+      "artifact": "https://github.com/flop-labs/yellowpaper/issues/26#issuecomment-5627932697",
+      "commit": "382f5bfa251c9e28cd5b943586412bbf7939896f",
+      "technocore": {
+        "room": "d-flop-infra",
+        "seq": 11
       },
       "verificationStatus": "VERIFIED"
     }

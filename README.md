@@ -8,7 +8,9 @@ This independent project is not an official FLOP Labs validator and carries no e
 
 ## Builder identity
 
-Work in this repository is associated with `did:key:z6Mks3GkYHmXSXjS639r9399owtxCMpzFexrq6EAziYZnjPk`. See [public provenance](PROVENANCE.md) and the [identity page](identity/index.html). Signed Technocore binding remains explicitly pending until the existing exact-DID signer is available.
+Work in this repository is associated with `did:key:z6Mks3GkYHmXSXjS639r9399owtxCMpzFexrq6EAziYZnjPk`. See [public provenance](PROVENANCE.md) and the [identity page](identity/index.html). Exact-DID Technocore activity is signed through a local typed signer boundary and recorded only after verified readback.
+
+On Windows, the optional productive signer is loaded from a CurrentUser DPAPI credential outside this repository. `node identity/cli.mjs signer-enroll` performs one-time interactive enrollment when needed; `node identity/cli.mjs signer-check` then performs a fresh cryptographic challenge without prompting. Missing, corrupt or mismatched credentials fail closed and are never replaced with another identity.
 
 ## Current lanes
 

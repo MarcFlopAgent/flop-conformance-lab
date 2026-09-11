@@ -1,5 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import {generateKeyPairSync,sign} from "node:crypto";
 import {mkdtempSync,mkdirSync,readFileSync,writeFileSync} from "node:fs";
 import {tmpdir} from "node:os";
 import {join} from "node:path";
@@ -8,9 +9,14 @@ import {
   ledgerDigest,publicKeyForDid,queueMilestone,renderProfile,sha256,
   validateConfig,validateLedgerRecord,validateMilestone,validateSignedEnvelope
 } from "../core.mjs";
+import {loadPersistentSigner,persistentSignerStatus} from "../persistent-signer.mjs";
 
 const config={schemaVersion:"1",did:TARGET_DID,fingerprint:TARGET_FINGERPRINT,signerStatus:"SIGNER_UNAVAILABLE",github:{profile:"https://github.com/retardio73-boop"},technocore:{profilePath:"/kv/did-62/c0aca3721ba547",legacyProfilePath:"/kv/did/62c0aca3721ba547",buildRoom:"d-flop-infra",mailbox:null},projects:[{slug:"conformance-lab",url:"https://github.com/retardio73-boop/flop-conformance-lab",localPath:".",visibility:"PUBLIC_ACTIVE"}]};
 const event={type:"provenance",project:"conformance-lab",summary:"created a durable public provenance boundary for repository artifacts",artifact:"https://github.com/retardio73-boop/flop-conformance-lab",commit:"0123456789abcdef0123456789abcdef01234567",createdAt:"2026-09-09T00:00:00.000Z"};
+const B58="123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
+
+function base58(bytes){let value=BigInt(`0x${Buffer.from(bytes).toString("hex")}`),out="";while(value){out=B58[Number(value%58n)]+out;value/=58n;}for(const byte of bytes){if(byte!==0)break;out="1"+out;}return out||"1";}
+function testDid(publicKey){const raw=publicKey.export({format:"der",type:"spki"}).subarray(-32);return `did:key:z${base58(Buffer.concat([Buffer.from([0xed,0x01]),raw]))}`;}
 
 function root(){const r=mkdtempSync(join(tmpdir(),"flop-identity-"));mkdirSync(join(r,"identity","pending","events"),{recursive:true});mkdirSync(join(r,"activity"),{recursive:true});writeFileSync(join(r,"identity","builder.json"),JSON.stringify(config));writeFileSync(join(r,"activity","index.json"),JSON.stringify({schemaVersion:"1",did:TARGET_DID,fingerprints:[],metrics:{}}));return r;}
 
@@ -26,6 +32,26 @@ test("signer capability detection is unavailable or fails closed on identity mis
   const mismatch=await detectSigner({did:async()=>"did:key:zDifferent",signCanonical:async()=>{throw Error("must not sign");}});
   assert.equal(mismatch.status,"SIGNER_MISMATCH");
   assert.equal(mismatch.expectedDid,TARGET_DID);
+});
+
+test("persistent signer loads a real challenge signer and fails closed",async()=>{
+  const pair=generateKeyPairSync("ed25519");
+  const did=testDid(pair.publicKey);
+  const requester=async(_root,request)=>request.operation==="status"
+    ?{ok:true,did}
+    :{ok:true,proof:{did,payload:request.payload,signature:sign(null,Buffer.from(request.payload),pair.privateKey).toString("base64url")}};
+  const signer=await loadPersistentSigner("fixture",did,requester);
+  assert.equal(await signer.did(),did);
+  assert.deepEqual(await detectSigner(signer,did),{status:"SIGNER_AVAILABLE",did});
+  assert.equal(await loadPersistentSigner("fixture",TARGET_DID,async()=>{throw Error("missing");}),null);
+  await assert.rejects(()=>loadPersistentSigner("fixture",TARGET_DID,async()=>({ok:true,did:"did:key:zDifferent"})),/DID_MISMATCH/);
+  assert.equal((await persistentSignerStatus("fixture",TARGET_DID,async()=>({ok:false,error:"CORRUPT"}))).status,"SIGNER_UNAVAILABLE");
+});
+
+test("CLI wires the persistent signer instead of passing null",()=>{
+  const cli=readFileSync(new URL("../cli.mjs",import.meta.url),"utf8");
+  assert.doesNotMatch(cli,/detectSigner\(null\)/);
+  assert.match(cli,/loadPersistentSigner/);
 });
 
 test("profile routes and rendering are deterministic while preserving unknown fields",()=>{
