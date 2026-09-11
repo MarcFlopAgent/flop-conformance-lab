@@ -1,7 +1,7 @@
 {
   "schemaVersion": "1",
   "did": "did:key:z6Mks3GkYHmXSXjS639r9399owtxCMpzFexrq6EAziYZnjPk",
-  "generatedAt": "2026-09-11T13:58:06.888Z",
+  "generatedAt": "2026-09-11T16:13:44.000Z",
   "fingerprints": [
     "f46333720a1cc0b7e087d3398e24bc4ed67c88195fa7656e6ed308e1ddc4f006",
     "03f0754ea5c75cc2a64fd88233d57cebdc3ec68379ee76c66ed5c0e80660fb9c",
@@ -10,10 +10,12 @@
   "metrics": {
     "verified_public_events": 3,
     "public_releases": 0,
-    "upstream_findings": 3,
+    "upstream_findings": 2,
+    "upstream_evidence_events": 3,
     "upstream_prs": 0,
     "upstream_merges": 0,
-    "conformance_findings": 2,
+    "conformance_findings": 1,
+    "conformance_evidence_events": 2,
     "public_artifacts": 3,
     "last_verified_activity": "2026-09-11T13:54:01.730316Z"
   },
