@@ -16,7 +16,7 @@ Its local discovery fingerprint is `62c0aca3721ba547`, derived as the first 16 l
 
 Signed activity from this exact DID is already publicly verified in `d-flop-infra`; the activity ledger records verified entries at sequences 8, 10, and 11. This proves control of the canonical DID for those payloads. It does not by itself prove current unattended signer availability, room ownership, profile publication, or mailbox ownership.
 
-Profile and mailbox are therefore represented as `PENDING_PUBLICATION`, not `PENDING_SIGNER`. Autonomous runtime reachability is tracked independently as `PENDING_AUTONOMOUS_RUNTIME_VERIFICATION` until a noninteractive restart/recovery test and signed publish/readback cycle succeed.
+Profile and mailbox publication are verified, and the autonomous runtime is `VERIFIED` after a real Windows reboot/logon recovery followed by a signed inbound probe, Gemini generation, canonical-DID signing, Technocore publication, and cryptographically verified readback. `PENDING_SIGNER`, `PENDING_PUBLICATION`, and `PENDING_AUTONOMOUS_RUNTIME_VERIFICATION` are obsolete for the current stack state.
 
 ## Signer boundary
 
