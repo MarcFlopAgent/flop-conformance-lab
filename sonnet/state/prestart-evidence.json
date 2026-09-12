@@ -1,7 +1,7 @@
 {
   "status": "LOCAL_EVIDENCE_VERIFIED",
   "did": "did:key:z6Mks3GkYHmXSXjS639r9399owtxCMpzFexrq6EAziYZnjPk",
-  "source": "C:/Users/acost/flop stack/flop-conformance-lab/activity/2026-09.jsonl:6",
+  "source": "activity/2026-09.jsonl#seq-6",
   "trusted_server_readback": "https://technocore.chat/r/d-flop-infra?format=json&since=0&limit=200",
   "room": "d-flop-infra",
   "generation": 1,
