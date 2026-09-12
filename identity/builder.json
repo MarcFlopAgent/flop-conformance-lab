@@ -16,15 +16,14 @@
   "technocore": {
     "profilePath": "/kv/did-62/c0aca3721ba547",
     "legacyProfilePath": "/kv/did/62c0aca3721ba547",
-    "profileStatus": "PENDING_PUBLICATION",
+    "profileStatus": "PUBLIC_DID_PROFILE_VERIFIED_DIRECTORY_POINTER",
     "buildRoom": "d-flop-infra",
     "buildRoomStatus": "ACTIVITY_VERIFIED",
     "buildRoomActivityStatus": "VERIFIED",
     "buildRoomOwnershipStatus": "UNVERIFIED",
-    "mailbox": null,
-    "mailboxStatus": "PENDING_PUBLICATION"
-  },
-  "projects": [
+    "mailbox": "mb-flop-infra-62c0aca3",
+    "mailboxStatus": "VERIFIED_RETENTION_AWARE"
+  },  "projects": [
     {
       "slug": "conformance-lab",
       "name": "Cross-System Conformance Lab",

@@ -1,9 +1,9 @@
 {
   "schemaVersion": "1",
-  "status": "PENDING_PUBLICATION",
+  "status": "VERIFIED_RETENTION_AWARE",
   "did": "did:key:z6Mks3GkYHmXSXjS639r9399owtxCMpzFexrq6EAziYZnjPk",
-  "mailbox": null,
+  "mailbox": "mb-flop-infra-62c0aca3",
   "signerStatus": "PROOF_OF_CONTROL_VERIFIED",
   "runtimeStatus": "PENDING_AUTONOMOUS_RUNTIME_VERIFICATION",
-  "note": "Mailbox publication is pending. Exact-DID proof of control is already verified; mailbox ownership still requires a signed publish/readback cycle from the autonomous runtime."
+  "note": "Mailbox activation and live responder readback are verified publicly: activation at generation 3 seq 3 and canonical-DID E2E response at generation 3 seq 6. Cold reboot/logon autonomy remains a separate pending runtime gate."
 }
