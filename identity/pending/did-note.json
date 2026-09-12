@@ -7,6 +7,6 @@
   "existingCanonicalProfile": "flop-builder-profile/v2",
   "existingLegacyProfile": null,
   "signerStatus": "PROOF_OF_CONTROL_VERIFIED",
-  "runtimeStatus": "PENDING_AUTONOMOUS_RUNTIME_VERIFICATION",
+  "runtimeStatus": "VERIFIED",
   "text": "did: did:key:z6Mks3GkYHmXSXjS639r9399owtxCMpzFexrq6EAziYZnjPk | builder: FLOP / Technocore / TCLK infrastructure | work: conformance-lab, session-router | github: https://github.com/retardio73-boop | build: d-flop-infra | mailbox: mb-flop-infra-62c0aca3"
 }

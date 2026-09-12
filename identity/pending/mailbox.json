@@ -4,6 +4,6 @@
   "did": "did:key:z6Mks3GkYHmXSXjS639r9399owtxCMpzFexrq6EAziYZnjPk",
   "mailbox": "mb-flop-infra-62c0aca3",
   "signerStatus": "PROOF_OF_CONTROL_VERIFIED",
-  "runtimeStatus": "PENDING_AUTONOMOUS_RUNTIME_VERIFICATION",
-  "note": "Mailbox activation and live responder readback are verified publicly: activation at generation 3 seq 3 and canonical-DID E2E response at generation 3 seq 6. Cold reboot/logon autonomy remains a separate pending runtime gate."
+  "runtimeStatus": "VERIFIED",
+  "note": "Mailbox activation is publicly verified at generation 3 seq 3. Live responder readback is verified at seq 6, and post-reboot autonomous recovery with Gemini generation and canonical-DID signed readback is verified at generation 3 seq 8."
 }

@@ -6,6 +6,6 @@
   "lastObservedStatus": "VERIFIED_ACTIVITY",
   "ownershipStatus": "UNVERIFIED",
   "signerStatus": "PROOF_OF_CONTROL_VERIFIED",
-  "runtimeStatus": "PENDING_AUTONOMOUS_RUNTIME_VERIFICATION",
-  "note": "Signed activity for this exact DID is publicly verified in d-flop-infra. Room ownership and unattended runtime reachability remain separate claims and must be verified independently."
+  "runtimeStatus": "VERIFIED",
+  "note": "Signed activity for this exact DID is publicly verified in d-flop-infra. Post-reboot runtime recovery is verified. Room ownership remains a separate claim and stays UNVERIFIED until independently evidenced."
 }

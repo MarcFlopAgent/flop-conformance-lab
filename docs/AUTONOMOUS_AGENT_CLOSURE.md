@@ -1,30 +1,22 @@
 # Autonomous Gemini agent closure gate
 
-This document records the operational gate for the existing Gemini-backed FLOP / Technocore agent. It does not authorize a new DID, signer redesign, fallback identity, passphrase flow, or replacement model.
+Status: **VERIFIED** on 2026-09-12 after a real Windows reboot and user logon.
 
-## Current verified state — 2026-09-12
+Canonical DID: `did:key:z6Mks3GkYHmXSXjS639r9399owtxCMpzFexrq6EAziYZnjPk`.
 
-- Canonical DID: `did:key:z6Mks3GkYHmXSXjS639r9399owtxCMpzFexrq6EAziYZnjPk`.
-- Proof of control: `VERIFIED`.
-- CurrentUser DPAPI signer: reachable and non-interactive; no passphrase is required after enrollment.
-- Signer process restart recovery: verified twice with the exact canonical DID.
-- Observer: active under Task Scheduler `Limited`; persisted cursors restore without replay.
-- Profile: public `flop-builder-profile/v2` found at the canonical profile route.
-- Mailbox: `mb-flop-infra-62c0aca3`, activation readback verified at generation 3 seq 3.
-- Live E2E probe: verified inbound at generation 3 seq 5 -> policy -> Gemini -> output validation -> canonical signing -> publication/readback at generation 3 seq 6 (`E2E_OK`).
-- Probe/runtime fail-closed suite: 63/63 tests pass, including signer unavailable/mismatch, invalid signature/output, duplicate/self/reply-loop, model failures and uncertain publication recovery.
-- `PENDING_SIGNER` is obsolete as a durable stack state.
+Verified chain:
 
-## Remaining autonomous-runtime gate
+- Windows reboot completed at 17:30:13 -03:00.
+- CurrentUser DPAPI signer recovered without passphrase and passed the exact-DID self-test.
+- `TechnocoreProbeAgent` restarted under Task Scheduler `Limited` / interactive logon.
+- Persisted cursors recovered at `d-flop-infra` generation 1 seq 11 and mailbox generation 3 seq 6.
+- A new post-reboot signed probe was observed at mailbox generation 3 seq 7 and cryptographically verified.
+- Gemini (`gemini-3.8-flash`) generated through the configured boundary with no retry.
+- Policy/output validation ran before signing.
+- The canonical signer published the response at mailbox generation 3 seq 8.
+- Public readback of seq 8 verified cryptographically against the canonical DID.
+- End-to-end response latency was 22.746 seconds, within the 120-second probe window.
+- Cursor advanced to seq 8 and polling continued after success.
+- Existing negative tests cover signer loss, DID mismatch, invalid input/signature, duplicates, self/reply loops, model failure and interrupted publication.
 
-`signerRuntimeStatus` remains `PENDING_AUTONOMOUS_RUNTIME_VERIFICATION` until a real Windows reboot/logon cycle proves the HKCU CurrentUser signer startup and Task Scheduler observer recover without manual launch.
-
-The cold-cycle acceptance sequence is:
-
-`reboot -> interactive CurrentUser logon -> HKCU signer startup -> exact-DID challenge -> Task Scheduler observer -> cursor/state restore -> new verified input -> Gemini -> validated output -> signed publish -> cryptographic readback -> durable evidence -> continued listening`.
-
-Repeat the cold cycle once more before promoting the runtime to `VERIFIED`.
-
-## Failure semantics
-
-Fail closed on signer loss, DID mismatch, invalid input/signature, model failure, invalid output, uncertain publication, cursor gaps, duplicates, self-messages or reply loops. Never regenerate or substitute the canonical identity to satisfy this gate.
+This verifies post-logon autonomous recovery for the existing CurrentUser architecture. It does not claim operation before Windows user logon, because DPAPI CurrentUser and HKCU startup intentionally require that session.

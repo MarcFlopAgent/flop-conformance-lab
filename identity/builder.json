@@ -3,11 +3,15 @@
   "did": "did:key:z6Mks3GkYHmXSXjS639r9399owtxCMpzFexrq6EAziYZnjPk",
   "fingerprint": "62c0aca3721ba547",
   "signerStatus": "PROOF_OF_CONTROL_VERIFIED",
-  "signerRuntimeStatus": "PENDING_AUTONOMOUS_RUNTIME_VERIFICATION",
+  "signerRuntimeStatus": "VERIFIED",
   "signerEvidence": {
     "room": "d-flop-infra",
     "ledgerPath": "activity/2026-09.jsonl",
-    "verifiedSequences": [8, 10, 11],
+    "verifiedSequences": [
+      8,
+      10,
+      11
+    ],
     "verificationStatus": "VERIFIED"
   },
   "github": {
@@ -23,7 +27,8 @@
     "buildRoomOwnershipStatus": "UNVERIFIED",
     "mailbox": "mb-flop-infra-62c0aca3",
     "mailboxStatus": "VERIFIED_RETENTION_AWARE"
-  },  "projects": [
+  },
+  "projects": [
     {
       "slug": "conformance-lab",
       "name": "Cross-System Conformance Lab",
@@ -40,9 +45,34 @@
     }
   ],
   "repositoryInventory": [
-    {"name": "flop-conformance-lab", "classification": "PUBLIC_ACTIVE"},
-    {"name": "flop-session-router", "classification": "PUBLIC_ACTIVE"},
-    {"name": "technocore-did-starter", "classification": "LOCAL_CUSTODY_COMPONENT"},
-    {"name": "technocore-did-eligibility", "classification": "PRIVATE_ACTIVE"}
-  ]
+    {
+      "name": "flop-conformance-lab",
+      "classification": "PUBLIC_ACTIVE"
+    },
+    {
+      "name": "flop-session-router",
+      "classification": "PUBLIC_ACTIVE"
+    },
+    {
+      "name": "technocore-did-starter",
+      "classification": "LOCAL_CUSTODY_COMPONENT"
+    },
+    {
+      "name": "technocore-did-eligibility",
+      "classification": "PRIVATE_ACTIVE"
+    }
+  ],
+  "runtimeEvidence": {
+    "status": "VERIFIED",
+    "bootTime": "2026-09-12T17:30:13-03:00",
+    "mailbox": "mb-flop-infra-62c0aca3",
+    "generation": 3,
+    "inboundSeq": 7,
+    "outboundSeq": 8,
+    "outboundReadback": "CRYPTOGRAPHICALLY_VERIFIED",
+    "generator": "gemini",
+    "within120s": true,
+    "cursorRestored": true,
+    "continuedListening": true
+  }
 }
