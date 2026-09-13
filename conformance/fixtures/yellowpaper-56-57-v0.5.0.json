@@ -9,6 +9,59 @@
     "issues": [56, 57],
     "sections": ["Appendix F.3", "Appendix G", "R11.2a", "R12.1a", "R12.1b", "§1 hash table"]
   },
+  "resolutionCanaries": {
+    "issue56": {
+      "currentState": "OPEN_ISSUE",
+      "promotionTarget": "TARGET_SPEC",
+      "promoteOnlyWhenAll": [
+        "payable_semantics_defined_normatively",
+        "payable_unit_defined_normatively",
+        "payable_value_origin_defined_for_receipt_verification",
+        "new_upstream_source_pinned_by_commit",
+        "fixture_reproduces_new_rule_without_local_inference"
+      ],
+      "before": "PAYABLE_SEMANTICS_UNRESOLVED",
+      "requiredResolutionEvidence": {
+        "semantics": "A normative rule states exactly what payable represents.",
+        "unit": "A normative rule states the unit/base-unit encoding of payable:u128LE.",
+        "origin": "A normative rule states where the verifier obtains or reconstructs payable when verifying the receipt."
+      },
+      "forbidPromotionWhen": [
+        "issue_closed_without_normative_text",
+        "comment_only_without_spec_or_stable_interface_change",
+        "implementation_requires_guessing_between_reserved_escrow_and_metered_amount",
+        "unit_remains_implicit"
+      ]
+    },
+    "issue57": {
+      "currentState": "OPEN_ISSUE",
+      "promotionTarget": "TARGET_SPEC",
+      "promoteOnlyWhenAll": [
+        "sum_tree_wording_removed_or_normatively_reconciled",
+        "merkle_node_preimage_unambiguous",
+        "aggregate_gn_binding_location_unambiguous",
+        "new_upstream_source_pinned_by_commit",
+        "fixture_reproduces_new_rule_without_local_inference"
+      ],
+      "before": "PLAIN_MERKLE_RULE_WITH_OPEN_SUM_TREE_TEXT_CONFLICT",
+      "requiredResolutionEvidence": {
+        "treeShape": "The spec explicitly confirms the plain Blake2-256 left||right tree or defines a replacement construction byte-for-byte.",
+        "aggregateBinding": "The spec explicitly states whether aggregate_gn is outside the node or committed inside it.",
+        "wording": "The §1 sum-tree wording is removed or reconciled with Appendix F.3."
+      },
+      "forbidPromotionWhen": [
+        "issue_closed_without_normative_text",
+        "comment_only_without_spec_change",
+        "sum_tree_and_plain_merkle_descriptions_remain_simultaneously_normative"
+      ]
+    },
+    "followUpPolicy": {
+      "mode": "SINGLE_TECHNICAL_FOLLOW_UP_AFTER_RESOLUTION",
+      "requiredShape": ["before", "resolution", "conformance_result"],
+      "noFollowUpWhileOpen": true,
+      "releasePolicy": "BATCH_WITH_NEXT_CONFORMANCE_LAB_RELEASE"
+    }
+  },
   "payableBoundary": {
     "status": "FAIL_CLOSED",
     "reason": "PAYABLE_SEMANTICS_UNRESOLVED",
