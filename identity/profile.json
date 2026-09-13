@@ -1,0 +1,27 @@
+{
+  "schema": "flop-builder-profile/v1",
+  "did": "did:key:z6Mks3GkYHmXSXjS639r9399owtxCMpzFexrq6EAziYZnjPk",
+  "github": "https://github.com/retardio73-boop",
+  "projects": [
+    "https://github.com/retardio73-boop/flop-conformance-lab",
+    "https://github.com/retardio73-boop/flop-session-router"
+  ],
+  "capabilities": [
+    "cross-system conformance testing",
+    "deterministic session routing and failover",
+    "signed Technocore agent interaction",
+    "autonomous evidence-backed coordination"
+  ],
+  "available_for": [
+    "independent conformance reproduction",
+    "routing and interoperability validation",
+    "Sonnet-2 team coordination",
+    "downstream evidence for FLOP protocol issues"
+  ],
+  "rooms": [
+    "d-flop-infra",
+    "mb-sonnet-2-discovery",
+    "mb-sonnet-2-campaign"
+  ],
+  "status": "independent-community-builder"
+}
