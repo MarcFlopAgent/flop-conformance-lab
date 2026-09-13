@@ -8,10 +8,29 @@ const FIXTURE_URL = new URL(
 
 const PINNED_YELLOWPAPER_COMMIT = "3eaf2f25bc46a501df225cae4e4e991975f6b2a9";
 
+type Canary = {
+  currentState: string;
+  promotionTarget: string;
+  promoteOnlyWhenAll: string[];
+  before: string;
+  requiredResolutionEvidence: Record<string, string>;
+  forbidPromotionWhen: string[];
+};
+
 type Fixture = {
   id: string;
   classification: string;
   upstream: { commit: string; issues: number[] };
+  resolutionCanaries: {
+    issue56: Canary;
+    issue57: Canary;
+    followUpPolicy: {
+      mode: string;
+      requiredShape: string[];
+      noFollowUpWhileOpen: boolean;
+      releasePolicy: string;
+    };
+  };
   payableBoundary: {
     status: string;
     reason: string;
@@ -45,12 +64,59 @@ function parseHex32(value: string, label: string): Buffer {
   return Buffer.from(value, "hex");
 }
 
+function validateCanary(issue: number, canary: Canary, required: string[]): void {
+  assert(canary.currentState === "OPEN_ISSUE", `ISSUE_${issue}_CANARY_MUST_REMAIN_OPEN`);
+  assert(canary.promotionTarget === "TARGET_SPEC", `ISSUE_${issue}_PROMOTION_TARGET_DIVERGENCE`);
+  for (const criterion of required) {
+    assert(canary.promoteOnlyWhenAll.includes(criterion), `ISSUE_${issue}_MISSING_PROMOTION_CRITERION_${criterion}`);
+  }
+  assert(canary.forbidPromotionWhen.length > 0, `ISSUE_${issue}_PROMOTION_GUARDS_MISSING`);
+}
+
+export function resolutionCanaryStatus(): Record<string, unknown> {
+  const fixture = JSON.parse(readFileSync(FIXTURE_URL, "utf8")) as Fixture;
+  return {
+    classification: fixture.classification,
+    issue56: fixture.resolutionCanaries.issue56,
+    issue57: fixture.resolutionCanaries.issue57,
+    followUpPolicy: fixture.resolutionCanaries.followUpPolicy,
+  };
+}
+
 export function validateYellowpaper5657Fixture(): Record<string, unknown> {
   const fixture = JSON.parse(readFileSync(FIXTURE_URL, "utf8")) as Fixture;
 
   assert(fixture.upstream.commit === PINNED_YELLOWPAPER_COMMIT, "YELLOWPAPER_PIN_DIVERGENCE");
   assert(fixture.upstream.issues.includes(56), "ISSUE_56_NOT_PINNED");
   assert(fixture.upstream.issues.includes(57), "ISSUE_57_NOT_PINNED");
+
+  validateCanary(56, fixture.resolutionCanaries.issue56, [
+    "payable_semantics_defined_normatively",
+    "payable_unit_defined_normatively",
+    "payable_value_origin_defined_for_receipt_verification",
+    "new_upstream_source_pinned_by_commit",
+    "fixture_reproduces_new_rule_without_local_inference",
+  ]);
+  validateCanary(57, fixture.resolutionCanaries.issue57, [
+    "sum_tree_wording_removed_or_normatively_reconciled",
+    "merkle_node_preimage_unambiguous",
+    "aggregate_gn_binding_location_unambiguous",
+    "new_upstream_source_pinned_by_commit",
+    "fixture_reproduces_new_rule_without_local_inference",
+  ]);
+  assert(
+    fixture.resolutionCanaries.followUpPolicy.mode === "SINGLE_TECHNICAL_FOLLOW_UP_AFTER_RESOLUTION",
+    "FOLLOW_UP_POLICY_DIVERGENCE",
+  );
+  assert(
+    fixture.resolutionCanaries.followUpPolicy.requiredShape.join("|") === "before|resolution|conformance_result",
+    "FOLLOW_UP_SHAPE_DIVERGENCE",
+  );
+  assert(fixture.resolutionCanaries.followUpPolicy.noFollowUpWhileOpen, "FOLLOW_UP_MUST_WAIT_FOR_RESOLUTION");
+  assert(
+    fixture.resolutionCanaries.followUpPolicy.releasePolicy === "BATCH_WITH_NEXT_CONFORMANCE_LAB_RELEASE",
+    "RELEASE_POLICY_DIVERGENCE",
+  );
 
   assert(fixture.payableBoundary.status === "FAIL_CLOSED", "PAYABLE_BOUNDARY_MUST_FAIL_CLOSED");
   assert(
@@ -118,5 +184,12 @@ export function validateYellowpaper5657Fixture(): Record<string, unknown> {
     merkleNodePreimageBytes: preimage.length,
     aggregateCheck: fixture.merkleBoundary.aggregateCheck,
     issues: fixture.upstream.issues,
+    resolutionCanaries: {
+      issue56: fixture.resolutionCanaries.issue56.currentState,
+      issue57: fixture.resolutionCanaries.issue57.currentState,
+      promotionTarget: "TARGET_SPEC",
+      followUpPolicy: fixture.resolutionCanaries.followUpPolicy.mode,
+      releasePolicy: fixture.resolutionCanaries.followUpPolicy.releasePolicy,
+    },
   };
 }
