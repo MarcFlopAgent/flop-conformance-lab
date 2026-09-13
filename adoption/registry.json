@@ -1,6 +1,6 @@
 {
   "schema": "flop-conformance-adoption-registry/v1",
-  "updatedAt": "2026-09-13T18:15:00Z",
+  "updatedAt": "2026-09-13T21:56:00Z",
   "entries": [
     {
       "implementation": "Mariukasfak/flop-evidence-scout",
@@ -29,6 +29,24 @@
         "reason": "Strong structural fit for positive TCLK evidence; external issue creation blocked by GitHub integration permissions."
       },
       "claim": "Candidate only; no integration or adoption claim."
+    },
+    {
+      "implementation": "UfukNode/technocore-did-tool",
+      "profile": "technocore-agent",
+      "status": "CANDIDATE",
+      "evidence": {
+        "reason": "Repository has a live Technocore identity workflow and is structurally suitable for independent DID/mailbox/signature evidence. Attempted issue creation returned GitHub 403 for this integration."
+      },
+      "claim": "Candidate only; no proposal delivery or adoption claim."
+    },
+    {
+      "implementation": "zunmax/technocore-did-starter",
+      "profile": "technocore-agent",
+      "status": "CANDIDATE",
+      "evidence": {
+        "reason": "Widely forked Technocore DID onboarding tool; a narrow profile could validate generated public identity/signature evidence without changing key custody."
+      },
+      "claim": "Candidate only; no proposal delivery or adoption claim."
     }
   ]
 }
