@@ -28,3 +28,31 @@ export function contributionProof851Boundary() {
     ],
   } as const;
 }
+
+export const TECHNOCoreContributionOuterSchema = "technocore-contribution-proof-v1";
+
+export interface DeployedContributionProofShape {
+  artifact_url: string;
+  commit: string;
+  did: string;
+  signature: string;
+  schema: typeof TECHNOCoreContributionOuterSchema;
+}
+
+export function assertDeployedContributionProofShape(
+  proof: unknown,
+): asserts proof is DeployedContributionProofShape {
+  if (typeof proof !== "object" || proof === null || Array.isArray(proof)) {
+    throw new Error("TECHNOCORE_CONTRIBUTION_PROOF_SHAPE_OUT_OF_CONTRACT");
+  }
+  const value = proof as Record<string, unknown>;
+  const keys = Object.keys(value).sort();
+  const expected = ["artifact_url", "commit", "did", "schema", "signature"];
+  if (JSON.stringify(keys) !== JSON.stringify(expected)) {
+    throw new Error("TECHNOCORE_CONTRIBUTION_PROOF_SHAPE_OUT_OF_CONTRACT");
+  }
+  if (value.schema !== TECHNOCoreContributionOuterSchema) {
+    throw new Error("TECHNOCORE_CONTRIBUTION_OUTER_SCHEMA_OUT_OF_CONTRACT");
+  }
+  assertContributionCommit(value.commit);
+}

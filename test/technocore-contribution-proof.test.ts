@@ -31,3 +31,34 @@ test("PR #851 boundary remains explicitly provisional and fail closed", () => {
   assert.equal(boundary.upstreamPr, 851);
   assert.equal(boundary.invalidSignedStringPolicy, "FAIL_CLOSED_BEFORE_SIGNATURE_ACCEPTANCE");
 });
+
+
+test("PR #851 deployed proof shape keeps the outer schema distinct", async () => {
+  const mod = await import("../src/technocore-contribution-proof.js");
+  const proof = {
+    artifact_url: "https://github.com/example/repo/pull/1",
+    commit: "a".repeat(40),
+    did: "did:key:z6Mkexample",
+    signature: "sig",
+    schema: mod.TECHNOCoreContributionOuterSchema,
+  };
+  assert.doesNotThrow(() => mod.assertDeployedContributionProofShape(proof));
+  assert.equal(mod.TECHNOCoreContributionOuterSchema, "technocore-contribution-proof-v1");
+  assert.equal(mod.TECHNOCoreContributionSchema, "technocore-contribution-v1");
+  assert.notEqual(mod.TECHNOCoreContributionOuterSchema, mod.TECHNOCoreContributionSchema);
+});
+
+test("PR #851 deployed proof shape rejects missing or wrong outer schema", async () => {
+  const mod = await import("../src/technocore-contribution-proof.js");
+  const base = {
+    artifact_url: "https://github.com/example/repo/pull/1",
+    commit: "b".repeat(64),
+    did: "did:key:z6Mkexample",
+    signature: "sig",
+  };
+  assert.throws(() => mod.assertDeployedContributionProofShape(base), /SHAPE_OUT_OF_CONTRACT/);
+  assert.throws(
+    () => mod.assertDeployedContributionProofShape({ ...base, schema: mod.TECHNOCoreContributionSchema }),
+    /OUTER_SCHEMA_OUT_OF_CONTRACT/,
+  );
+});
