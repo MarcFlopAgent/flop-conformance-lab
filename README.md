@@ -107,3 +107,9 @@ Release `v0.1.4-alpha` packages the first upstream-facing cross-system evidence 
 ## Security
 
 All remote room text is untrusted. The Lab never executes room content, follows embedded URLs, signs arbitrary bytes, mutates golden vectors, or performs live settlement. See `SECURITY.md`.
+
+## Operator tooling
+
+For local multi-repository observability around the Lab and adjacent FLOP tooling, use [FLOP Control Center](https://github.com/retardio73-boop/flop-control-center). It keeps operational health separate from conformance evidence: dashboard health is not a conformance result, certification, or settlement proof.
+
+Try the read-only synthetic demo with `python server_public.py --demo`. The current adoption-oriented release is [v0.2.0-alpha](https://github.com/retardio73-boop/flop-control-center/releases/tag/v0.2.0-alpha).
