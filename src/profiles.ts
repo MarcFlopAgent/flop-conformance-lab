@@ -9,8 +9,9 @@ import {
 } from "./adversarial-evidence.js";
 import { didKeyBytes, transportRepresentable, verifyTechnocoreRecord } from "./technocore.js";
 import type { TransportRecord } from "./types.js";
+import { verifyFlopMarketAdapter } from "./flop-market-profile.js";
 
-export const EXTERNAL_PROFILES = ["tclk-transcript", "technocore-agent"] as const;
+export const EXTERNAL_PROFILES = ["tclk-transcript", "technocore-agent", "flop-market-adapter"] as const;
 export type ExternalProfile = (typeof EXTERNAL_PROFILES)[number];
 export type PortableCheckStatus = "PASS" | "WARN" | "FAIL" | "SKIP";
 export type PortableResultStatus = "PASS" | "PARTIAL" | "FAIL";
@@ -379,5 +380,6 @@ function verifyTechnocoreAgent(rawInput: unknown): PortableConformanceResult {
 export function verifyExternalProfile(profile: string, input: unknown): PortableConformanceResult {
   if (profile === "tclk-transcript") return verifyTclkTranscript(input);
   if (profile === "technocore-agent") return verifyTechnocoreAgent(input);
+  if (profile === "flop-market-adapter") return verifyFlopMarketAdapter(input);
   throw new Error(`UNKNOWN_EXTERNAL_PROFILE:${profile}`);
 }
